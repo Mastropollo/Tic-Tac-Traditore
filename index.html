@@ -9,23 +9,26 @@
 <body>
 <title>Tic Tac Traditore</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;700&family=Chakra+Petch:wght@600;700&display=swap">
 <style>
-/* Layout: app a schermata singola. Barra di stato in alto, contenuto al centro, azioni in basso. Mai scorrere.
-   Identità: notte di festa. Indaco profondo, bomba rosso-arancio, miccia gialla, verde solo per "disinnescato". */
+/* App a schermata singola: barra di stato in alto, contenuto al centro, azioni in basso. Mai scorrere.
+   Identità: notte di festa. Indaco profondo, bomba rosso-arancio, miccia gialla, verde solo per "disinnescato".
+   Due famiglie di carattere: Rubik per l'interfaccia, Chakra Petch per l'hardware della bomba. */
 :root{
   --bg:#1c1738; --panel:#272048; --panel-2:#342b5f; --line:#4a4080; --ink:#f6f2ff; --mute:#a69fcc;
   --hot:#ff5b3d; --hot-dark:#c63d24; --go:#40de8f; --fuse:#ffc84a; --white:#ffffff;
   --f-display:'Lilita One','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
   --f-body:'Rubik',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-hw:'Chakra Petch','Roboto Condensed','Arial Narrow',system-ui,sans-serif;
   --r:16px;
   color-scheme:dark;
 }
 html{height:100%;box-sizing:border-box;overflow:hidden}
 *,*::before,*::after{box-sizing:inherit}
 body{height:100%;margin:0;overflow:hidden;display:flex;justify-content:center;align-items:center;background:var(--bg);color:var(--ink);font:16px/1.4 var(--f-body);-webkit-tap-highlight-color:transparent}
-#app{height:100%;max-height:880px;width:100%;max-width:480px;margin:0 auto;padding:0 16px;padding-block:12px 14px;display:flex;flex-direction:column;gap:12px}
-.main{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;overflow:auto}
+#app{height:100%;max-height:900px;width:100%;max-width:480px;margin:0 auto;padding:0 16px;padding-block:12px 14px;display:flex;flex-direction:column;gap:10px}
+.main{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;overflow:auto}
 .center{justify-content:center}
 .bottom{flex:none;display:flex;gap:10px}
 .bottom>*{flex:1}
@@ -42,141 +45,220 @@ p{margin:0}
 .btn.ghost{background:transparent;box-shadow:none;color:var(--mute);height:44px}
 .btn.icon{flex:0 0 54px;padding:0}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn:focus-visible,.tile:focus-visible,.wire:focus-visible,.pbtn:focus-visible,.name:focus-visible,.tab:focus-visible{outline:3px solid var(--fuse);outline-offset:2px}
+.btn:focus-visible,.tile:focus-visible,.wrow:focus-visible,.arc:focus-visible,.name:focus-visible,.tab:focus-visible,.chip:focus-visible,.sw:focus-visible,.dkey:focus-visible{outline:3px solid var(--fuse);outline-offset:2px}
 .btn svg{width:22px;height:22px}
 .names-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.name{height:48px;border:0;border-radius:12px;background:var(--panel-2);color:var(--ink);font:500 1rem var(--f-body);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.22)}
+.name{height:46px;border:0;border-radius:12px;background:var(--panel-2);color:var(--ink);font:500 1rem var(--f-body);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.22);padding:0 8px;overflow:hidden}
 .name small{color:var(--mute);font-size:.75rem}
 .name:disabled{opacity:.3}
 
 /* setup */
-.head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.logo{font-family:var(--f-display);font-size:2.1rem;line-height:.95;color:var(--hot)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex:none}
+.logo{font-family:var(--f-display);font-size:1.9rem;line-height:.95;color:var(--hot)}
 .logo span{color:var(--ink)}
-.pill{height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--line);background:transparent;color:var(--ink);font:500 .9rem var(--f-body);cursor:pointer}
-.settings{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.setting{background:var(--panel);border-radius:var(--r);padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.setting .k{font-size:.8rem;color:var(--mute)}
-.setting .v{font:400 1.5rem var(--f-display)}
-.round{width:36px;height:36px;border-radius:50%;border:0;background:var(--panel-2);color:var(--ink);font:500 1.3rem/1 var(--f-body);cursor:pointer}
-.inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-input[type=text]{width:100%;height:42px;font:16px var(--f-body);padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.pill{height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--line);background:transparent;color:var(--ink);font:500 .9rem var(--f-body);cursor:pointer;flex:none}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.setting{background:var(--panel);border-radius:14px;padding:6px 8px;display:flex;align-items:center;justify-content:space-between;gap:4px}
+.setting .k{font-size:.72rem;color:var(--mute);white-space:nowrap}
+.setting .v{font:400 1.35rem var(--f-display);line-height:1.1}
+.round{width:34px;height:34px;border-radius:50%;border:0;background:var(--panel-2);color:var(--ink);font:500 1.25rem/1 var(--f-body);cursor:pointer;flex:none}
+.round:disabled{opacity:.3}
+.chips{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;background:var(--panel);padding:4px;border-radius:14px}
+.chip{height:38px;border:0;border-radius:10px;background:transparent;color:var(--mute);font:500 .92rem var(--f-body);cursor:pointer;display:grid;place-items:center;line-height:1.1}
+.chip.on{background:var(--panel-2);color:var(--ink);font-weight:700}
+.chip small{display:block;font-size:.66rem;color:var(--mute);font-weight:400}
+.toggle{display:flex;align-items:center;gap:10px;background:var(--panel);border-radius:14px;padding:8px 12px;border:0;color:var(--ink);font:500 .92rem var(--f-body);cursor:pointer;text-align:left;width:100%}
+.toggle .sw-track{width:44px;height:26px;border-radius:13px;background:var(--panel-2);position:relative;flex:none;transition:background .15s}
+.toggle .sw-track i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--mute);transition:transform .15s,background .15s}
+.toggle.on .sw-track{background:var(--go)}
+.toggle.on .sw-track i{transform:translateX(18px);background:var(--white)}
+.toggle span{flex:1}
+.toggle small{display:block;color:var(--mute);font-size:.76rem;font-weight:400}
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+input[type=text]{width:100%;height:40px;font:15px var(--f-body);padding:0 10px;border-radius:11px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
 input[type=text]::placeholder{color:var(--mute);opacity:.7}
-.resume{display:flex;align-items:center;gap:10px;background:var(--panel);border-radius:var(--r);padding:8px 8px 8px 14px}
-.resume p{flex:1;font-size:.9rem}
-.resume .btn{height:40px;font-size:.92rem}
+.resume{display:flex;align-items:center;gap:8px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 12px}
+.resume p{flex:1;font-size:.86rem}
+.resume .btn{height:38px;font-size:.9rem;flex:0 0 auto;padding:0 12px}
+.warn{font-size:.8rem;color:var(--fuse);text-align:center}
 
 /* barra di stato */
-.top{flex:none;background:var(--panel);border-radius:var(--r);padding:10px 14px;display:grid;gap:8px}
-.top-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.9rem;color:var(--mute)}
+.top{flex:none;background:var(--panel);border-radius:var(--r);padding:9px 12px;display:grid;gap:7px}
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.88rem;color:var(--mute)}
 .top-row b{color:var(--ink);font-weight:700}
-.pips{display:flex;gap:6px}
-.pip{width:14px;height:14px;border-radius:50%;border:2px solid var(--line)}
+.pips{display:flex;gap:5px}
+.pip{width:13px;height:13px;border-radius:50%;border:2px solid var(--line)}
 .pip.on{background:var(--hot);border-color:var(--hot);box-shadow:0 0 8px var(--hot)}
+.plate{display:inline-flex;align-items:center;gap:5px;background:#120e26;border:1px solid #3a3170;border-radius:7px;padding:1px 7px;font:700 .82rem var(--f-hw);letter-spacing:.04em;color:var(--mute)}
+.plate .pn{color:var(--fuse);font-size:1.05rem}
+.plate .psh{width:15px;height:15px;border-radius:4px;display:grid;place-items:center;background:var(--c);color:var(--t)}
+.plate .psh svg{width:10px;height:10px}
 .fuse{display:flex;align-items:center;gap:10px}
 .fuse-track{flex:1;height:8px;border-radius:4px;background:var(--panel-2);overflow:hidden}
 .fuse-bar{height:100%;background:var(--fuse);border-radius:4px;transition:width .2s linear}
-.fuse-n{font:400 1.4rem/1 var(--f-display);color:var(--fuse);min-width:2ch;text-align:right;font-variant-numeric:tabular-nums}
+.fuse-n{font:400 1.35rem/1 var(--f-display);color:var(--fuse);min-width:2ch;text-align:right;font-variant-numeric:tabular-nums}
 .fuse.hot .fuse-bar{background:var(--hot)} .fuse.hot .fuse-n{color:var(--hot);animation:blink .5s steps(2) infinite}
 @keyframes blink{50%{opacity:.4}}
-.alert{flex:none;border-radius:12px;padding:8px 12px;font-size:.92rem;background:rgba(255,200,74,.12);color:var(--fuse)}
+.alert{flex:none;border-radius:12px;padding:7px 12px;font-size:.9rem;background:rgba(255,200,74,.12);color:var(--fuse)}
 .alert.red{background:rgba(255,91,61,.15);color:#ff9a86}
-.hint{flex:none;font-size:.9rem;color:var(--mute);text-align:center}
+.hint{flex:none;font-size:.88rem;color:var(--mute);text-align:center}
 
-/* schermate di passaggio */
+/* passaggi */
 .big-name{font-family:var(--f-display);font-size:clamp(2.6rem,13vw,3.6rem);color:var(--fuse);line-height:1;text-align:center;word-break:break-word}
 .stack{display:grid;gap:8px;justify-items:center;text-align:center}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:var(--panel);border-radius:var(--r);padding:12px 6px;text-align:center;display:grid;gap:2px}
-.stat b{font:400 1.8rem/1 var(--f-display)}
-.stat span{font-size:.8rem;color:var(--mute)}
+.stat{background:var(--panel);border-radius:var(--r);padding:11px 6px;text-align:center;display:grid;gap:2px}
+.stat b{font:400 1.7rem/1 var(--f-display)}
+.stat span{font-size:.78rem;color:var(--mute)}
 
-/* chip colori e tasti nei frammenti */
-.cc{display:inline-flex;align-items:center;gap:4px;padding:1px 8px 1px 4px;border-radius:999px;background:var(--c);color:var(--t);font-weight:700;font-size:.92em;vertical-align:1px;white-space:nowrap;box-shadow:0 0 0 1px rgba(255,255,255,.3)}
-.cc i{font-style:normal;font-size:.85em;width:1.2em;text-align:center}
-.kl{display:inline-block;padding:0 6px;border-radius:6px;border:2px solid var(--ink);font-weight:700;font-size:.85em;letter-spacing:.03em}
+/* forme dei colori */
+.sh{display:block;width:1em;height:1em;flex:none}
+.cc{display:inline-flex;align-items:center;gap:5px;padding:2px 9px 2px 5px;border-radius:999px;background:var(--c);color:var(--t);font-weight:700;font-size:.9em;white-space:nowrap;box-shadow:0 0 0 1px rgba(255,255,255,.3);vertical-align:1px}
+.cc .sh{width:.82em;height:.82em}
+.kl{display:inline-block;padding:0 6px;border-radius:6px;border:2px solid var(--ink);font:700 .82em var(--f-hw);letter-spacing:.04em;vertical-align:1px}
+.dir{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:6px;background:var(--panel-2);color:var(--fuse);font-size:.9em;vertical-align:-.3em}
+.key{color:var(--fuse);font-weight:700}
 
 /* frammenti */
-.frag{background:var(--panel);border-radius:var(--r);padding:10px 14px 12px;display:grid;gap:6px}
-.ft{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--mute)}
-.ft svg{width:20px;height:20px}
-.fr{display:grid;grid-template-columns:3.6em 1fr;align-items:baseline;gap:6px;font-size:1.08rem;line-height:1.5}
-.fk{font-size:.82rem;color:var(--mute)}
-.role{font-family:var(--f-display);font-size:2.4rem;line-height:1}
+.frag{background:var(--panel);border-radius:var(--r);padding:11px 14px 13px;display:grid;gap:7px;border-left:4px solid var(--line)}
+.frag.osserva{border-left-color:var(--fuse)}
+.frag.agisci{border-left-color:var(--hot)}
+.fh{display:flex;align-items:center;gap:7px;font:600 .68rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.fh svg.ic{width:17px;height:17px;flex:none}
+.fh b{color:var(--ink);font-weight:700}
+.frag.osserva .fh b{color:var(--fuse)} .frag.agisci .fh b{color:var(--hot)}
+.fm{font-size:1.1rem;line-height:1.55}
+.fn{font-size:.84rem;color:var(--mute);line-height:1.4}
+.role{font-family:var(--f-display);font-size:2.3rem;line-height:1}
 .role.S{color:var(--hot)} .role.A{color:var(--go)}
-.line{background:var(--panel);border-radius:var(--r);padding:10px 14px;font-size:.92rem}
-.line b{font-weight:700}
+.line{background:var(--panel);border-radius:var(--r);padding:11px 14px;font-size:.94rem}
+.sect{font:600 .68rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-top:4px}
 
-/* moduli: griglia */
-.mods{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,1fr);gap:10px}
-.mods.one{grid-template-columns:1fr}
-.tile{min-height:0;border:2px solid transparent;border-radius:18px;background:var(--panel);color:var(--ink);cursor:pointer;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:left;font:inherit;box-shadow:inset 0 -3px 0 rgba(0,0,0,.22)}
-.tile:active{transform:scale(.98)}
+/* bomba */
+.mods{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mods.rows-1{grid-template-rows:minmax(0,1fr)} .mods.rows-2{grid-template-rows:repeat(2,minmax(0,1fr))} .mods.rows-3{grid-template-rows:repeat(3,minmax(0,1fr))}
+.tile{position:relative;border-radius:18px;padding:7px 10px 9px;display:flex;flex-direction:column;gap:3px;border:2px solid rgba(255,255,255,.04);min-height:0;
+  background:radial-gradient(circle at 9px 9px,#4a4080 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 9px) 9px,#4a4080 2px,transparent 2.5px),radial-gradient(circle at 9px calc(100% - 9px),#4a4080 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#4a4080 2px,transparent 2.5px),linear-gradient(180deg,#2b2350,#231c43)}
 .tile.wide{grid-column:1/-1}
+.tile.picked{border-color:rgba(255,200,74,.55)}
+.tile.flash-green{animation:fg 1.1s ease-out} .tile.flash-red{animation:fr 1.1s ease-out}
+@keyframes fg{0%{box-shadow:0 0 0 4px var(--go),0 0 30px var(--go)}100%{box-shadow:none}}
+@keyframes fr{0%{box-shadow:0 0 0 4px var(--hot),0 0 30px var(--hot);transform:translateX(-4px)}10%{transform:translateX(4px)}20%{transform:translateX(-3px)}30%{transform:none}100%{box-shadow:none}}
 .tile.last{border-color:var(--hot);animation:heart 1s infinite}
 @keyframes heart{0%,40%,100%{box-shadow:none}10%,30%{box-shadow:0 0 0 3px var(--hot),0 0 22px rgba(255,91,61,.5)}}
-.tile-h{display:flex;align-items:center;justify-content:space-between;gap:6px}
-.tile-h .id{font:400 1.5rem/1 var(--f-display)}
-.tile-h .ty{font-size:.8rem;color:var(--mute);flex:1}
-.led{width:22px;height:22px;border-radius:50%;background:var(--panel-2);border:2px solid var(--line);display:grid;place-items:center;font:700 .75rem/1 var(--f-body);color:var(--bg);flex:none}
+.tile-h{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 4px;flex:none}
+.tile-h .id{font:400 1.2rem/1 var(--f-display)}
+.tile-h .ty{font:600 .68rem var(--f-hw);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);flex:1}
+.led{width:20px;height:20px;border-radius:50%;background:var(--panel-2);border:2px solid var(--line);display:grid;place-items:center;font:700 .72rem/1 var(--f-body);color:var(--bg);flex:none}
 .led.green{background:var(--go);border-color:var(--go);box-shadow:0 0 10px var(--go)}
 .led.red{background:var(--hot);border-color:var(--hot);box-shadow:0 0 10px var(--hot);color:var(--white)}
 .led.wait{background:var(--fuse);border-color:var(--fuse);animation:blink .3s steps(2) infinite}
-.mini{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.mini-w{width:100%;display:grid;gap:5px}
-.mini-w i{display:block;height:8px;border-radius:4px;background:var(--c);box-shadow:0 0 0 1px rgba(255,255,255,.22)}
-.mini-w i.cut{background:linear-gradient(90deg,var(--c) 0 40%,transparent 40% 60%,var(--c) 60%);opacity:.5}
-.mini-b{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
-.mini-b i{aspect-ratio:1;border-radius:50%;background:var(--c);max-width:28px;justify-self:center;width:100%}
-.mini-k{display:flex;align-items:center;gap:10px}
-.mini-k .d{font:400 1.6rem/1 var(--f-display);color:var(--fuse)}
-.mini-dial{width:40px;height:40px;border-radius:50%;background:var(--panel-2);position:relative}
-.mini-dial i{position:absolute;left:50%;top:4px;width:3px;height:14px;margin-left:-1.5px;background:var(--fuse);border-radius:2px;transform-origin:50% 16px}
+.mod-body{flex:1;min-height:0;container-type:size;display:flex;align-items:center;justify-content:center}
+.mod-note{flex:none;font:600 .62rem var(--f-hw);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);text-align:center}
 
-/* modulo aperto */
-.det-h{display:flex;align-items:center;gap:10px}
-.det-h .btn{height:44px;flex:none;padding:0 14px}
-.det-h .t{flex:1;font:400 1.5rem/1 var(--f-display)}
-.det-h .t span{font:400 .9rem var(--f-body);color:var(--mute);margin-left:6px}
-.det-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px}
-.wire{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:10px;height:clamp(52px,10.5vh,74px);border:2px solid transparent;border-radius:14px;background:var(--panel);color:var(--mute);font:700 1rem var(--f-body);cursor:pointer;padding:0 12px}
-.wire .bar{height:26px;border-radius:13px;background:var(--c);color:var(--t);display:flex;align-items:center;padding-left:12px;font-size:.95rem;box-shadow:inset 0 -5px 0 rgba(0,0,0,.2),0 0 0 1px rgba(255,255,255,.22)}
-.wire.cut{cursor:default}
-.wire.cut .bar{background:linear-gradient(90deg,var(--c) 0 42%,transparent 42% 58%,var(--c) 58%);box-shadow:none;opacity:.45}
-.wire.sel{border-color:var(--fuse);background:var(--panel-2)}
-.wire.justcut .bar{animation:snap .5s ease-out}
-@keyframes snap{0%{filter:brightness(2.5)}30%{transform:translateY(-2px) rotate(-1deg)}60%{transform:translateY(2px) rotate(1deg)}100%{transform:none;filter:none}}
-.pbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(100%,clamp(220px,46vh,360px));margin:0 auto}
-.pbtn{aspect-ratio:1;border:0;border-radius:24px;background:var(--c);color:var(--t);font:700 1.05rem var(--f-body);cursor:pointer;display:grid;place-content:center;gap:4px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.25);letter-spacing:.03em}
-.pbtn i{font-style:normal;font-size:1.3rem}
-.pbtn.sel{outline:4px solid var(--fuse);outline-offset:3px}
-.pbtn.pressed{box-shadow:inset 0 3px 0 rgba(0,0,0,.25);transform:translateY(2px)}
-.pbtn.justpressed{animation:press .35s ease-out}
-@keyframes press{40%{transform:translateY(6px) scale(.94)}100%{transform:translateY(2px)}}
-.knob-area{display:flex;align-items:center;justify-content:center;gap:14px}
-.dial .n{position:absolute;left:50%;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;text-align:center;font:500 .9rem/24px var(--f-body);color:var(--mute)}
-.dial .n.on{color:var(--fuse);font-weight:700}
-.knob{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle at 40% 35%,#5d5394,#2a2350);box-shadow:0 6px 12px rgba(0,0,0,.45);transition:transform .3s cubic-bezier(.3,1.4,.6,1)}
-.knob i{position:absolute;left:50%;top:7%;width:5px;height:30%;margin-left:-2.5px;background:var(--fuse);border-radius:3px}
-.readout{display:flex;justify-content:center;gap:18px;align-items:center;font-size:.9rem;color:var(--mute)}
-.readout b{font:400 2rem/1 var(--f-display);color:var(--fuse);margin-left:6px}
-.readout .dot{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c);color:var(--t);margin-left:6px;font-size:.8rem}
+/* cavi */
+.wlist{width:100%;max-width:340px;height:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;gap:clamp(1px,3.5cqh,16px)}
+.wrow{flex:1 1 0;min-height:0;max-height:40px;overflow:hidden;display:flex;align-items:center;border:0;background:transparent;border-radius:10px;padding:0 4px;cursor:pointer;color:var(--mute);font:700 clamp(.55rem,3cqh,.8rem) var(--f-hw);--ws:9}
+.wrow.sel{background:rgba(255,200,74,.1)}
+.wrow:disabled{cursor:default}
+.wrow .wn{width:15px;text-align:left;flex:none}
+.wrow .wtag{width:clamp(13px,4.6cqh,19px);height:clamp(13px,4.6cqh,19px);border-radius:50%;flex:none;display:grid;place-items:center;background:var(--c);color:var(--t);box-shadow:0 0 0 1.5px rgba(255,255,255,.35);margin-right:5px;font-size:clamp(8px,3cqh,11px)}
+.wrow.cut .wtag{opacity:.5}
+.wrow .term{width:7px;height:clamp(10px,4.2cqh,17px);border-radius:2px;background:#8f88bd;flex:none;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
+.wrow .wsvg{flex:1;min-width:0;height:100%;position:relative}
+.wrow .wsvg svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.wrow .wo{fill:none;stroke:rgba(255,255,255,.28);stroke-width:calc(var(--ws) * 1px + 2px);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.wrow .ws{fill:none;stroke-width:calc(var(--ws) * 1px);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.wrow .wsel{fill:none;stroke:var(--fuse);stroke-width:calc(var(--ws) * 1px + 8px);stroke-linecap:round;vector-effect:non-scaling-stroke}
+@container (max-height:150px){.mod-body .wrow{--ws:6}}
+@container (max-height:105px){.mod-body .wrow{--ws:4.5}}
+.wrow .fray{fill:none;stroke:#e9a25a;stroke-width:1.8;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.wrow.justcut .ws{animation:snapw .5s ease-out}
+@keyframes snapw{0%{filter:brightness(3)}100%{filter:none}}
+
+/* pulsanti */
+.arc-grid{width:100%;max-width:300px;height:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,minmax(0,124px));align-content:center;gap:8px}
+.arc-grid.wide{max-width:520px;grid-template-columns:repeat(4,1fr);grid-template-rows:minmax(0,124px)}
+.arc-cell{container-type:size;min-height:0;display:grid;place-items:center}
+.arc{width:min(100cqw,100cqh);height:min(100cqw,100cqh);border:0;border-radius:50%;padding:4px;cursor:pointer;background:#141029;box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 3px 0 rgba(0,0,0,.4);position:relative}
+.arc .cap{display:grid;place-content:center;justify-items:center;gap:1px;width:100%;height:100%;border-radius:50%;color:var(--t);font:700 clamp(.58rem,15cqw,.88rem)/1.1 var(--f-hw);letter-spacing:.04em;
+  background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.55),rgba(255,255,255,0) 32%),var(--c);box-shadow:inset 0 -5px 0 rgba(0,0,0,.28),0 4px 0 rgba(0,0,0,.35);transition:transform .08s}
+.arc .capsh{display:block;font-size:clamp(.5rem,13cqw,.76rem);opacity:.9;line-height:0}
+.arc .bn{position:absolute;top:2px;left:50%;transform:translateX(-50%);font:700 .6rem var(--f-hw);color:var(--mute)}
+.arc.sel{outline:3px solid var(--fuse);outline-offset:2px}
+.arc.pressed .cap,.arc:active .cap{transform:translateY(3px);box-shadow:inset 0 -2px 0 rgba(0,0,0,.28),0 1px 0 rgba(0,0,0,.35)}
+.arc.justpressed .cap{animation:press .35s ease-out}
+@keyframes press{40%{transform:translateY(6px) scale(.94)}100%{transform:translateY(3px)}}
+.arc:disabled{cursor:default}
+
+/* pomello */
+.knob-wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;gap:4px}
+.knob-wrap.wide{flex-direction:row;justify-content:center;gap:16px}
+.kinfo{display:flex;align-items:center;gap:8px;flex:none}
+.knob-wrap.wide .kinfo{flex-direction:column}
+.kinfo .lcd{display:flex;align-items:baseline;gap:6px;background:#120e26;border:1px solid #3a3170;border-radius:8px;padding:2px 9px}
+.kinfo .lcd small{font:600 .62rem var(--f-hw);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.kinfo .lcd b{font:700 1.3rem/1 var(--f-hw);color:var(--fuse);text-shadow:0 0 8px rgba(255,200,74,.6)}
+.dial-box{flex:1;min-height:0;min-width:0;width:100%;container-type:size;display:grid;place-items:center}
+.knob-wrap.wide .dial-box{flex:0 1 220px;height:100%;width:auto}
+svg.dial{width:min(100cqw,100cqh,230px);height:min(100cqw,100cqh,230px)}
+.dial .plateC{fill:#1a1538;stroke:#3a3170;stroke-width:1.5}
+.dial .tick{stroke:#5b5296;stroke-width:2;stroke-linecap:round}
+.dial .tick.on{stroke:var(--fuse)}
+.dial .num text{fill:var(--mute);font:700 11px var(--f-hw);text-anchor:middle;pointer-events:none}
+.dial .num.on text{fill:var(--fuse)}
+.dial .numhit{fill:transparent}
+.dial .num[data-a]{cursor:pointer}
+.dial .knurl{fill:none;stroke:#110d24;stroke-width:4;stroke-dasharray:2.1 2.1}
+.dial .ptr{fill:var(--fuse)}
+.dial .knob-g{transform-origin:60px 60px;transform-box:view-box;transition:transform .35s cubic-bezier(.3,1.4,.6,1)}
+.dial .knob-g[data-a]{cursor:pointer}
+@container (max-height:160px){
+ .mod-body .knob-wrap{flex-direction:row;justify-content:center;gap:8px}
+ .mod-body .knob-wrap .dial-box{flex:1 1 0;min-width:0;height:100%;width:auto}
+ .mod-body .kinfo .lcd{flex-direction:column;align-items:center;gap:0;padding:2px 7px}
+}
+
+/* sequenza */
+.seq{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(5px,5cqh,14px)}
+.seq-slots{display:flex;gap:4px;justify-content:center;max-width:100%}
+.seq-slots i{width:clamp(14px,min(18cqh,15cqw),40px);height:clamp(14px,min(18cqh,15cqw),40px);flex:none;border-radius:8px;background:#120e26;border:1.5px solid #3a3170;display:grid;place-items:center;font-style:normal;font-size:clamp(.6rem,min(11cqh,9cqw),1.3rem);color:var(--fuse)}
+.seq-slots i.empty{color:#3a3170}
+.dpad{display:flex;gap:4px;width:100%;max-width:260px;justify-content:center}
+.dkey{flex:1 1 0;min-width:0;max-width:52px;height:clamp(26px,min(22cqh,17cqw),52px);border:0;border-radius:11px;background:var(--panel-2);color:var(--ink);font-size:clamp(.9rem,11cqh,1.4rem);cursor:pointer;display:grid;place-items:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,.3)}
+.dkey:active{transform:translateY(2px)}
+.dkey.del{color:var(--mute);font-size:clamp(.8rem,4cqh,1rem)}
+.dkey:disabled{opacity:.35}
+
+/* interruttori */
+.swlist{width:100%;max-width:320px;height:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;gap:clamp(1px,2.5cqh,11px)}
+.sw{flex:1 1 0;min-height:0;max-height:42px;overflow:hidden;display:flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:10px;padding:0 4px;cursor:pointer;color:var(--mute);font:700 clamp(.55rem,2.8cqh,.78rem) var(--f-hw)}
+.sw:disabled{cursor:default}
+.sw .wtag{width:clamp(13px,4.6cqh,19px);height:clamp(13px,4.6cqh,19px);border-radius:50%;flex:none;display:grid;place-items:center;background:var(--c);color:var(--t);box-shadow:0 0 0 1.5px rgba(255,255,255,.35);font-size:clamp(8px,3cqh,11px)}
+.sw .track{flex:1;max-width:90px;height:clamp(13px,5cqh,28px);border-radius:999px;background:#17122f;box-shadow:inset 0 2px 4px rgba(0,0,0,.5);position:relative;transition:background .15s}
+.sw .track i{position:absolute;top:2px;left:2px;width:calc(50% - 2px);height:calc(100% - 4px);border-radius:999px;background:linear-gradient(180deg,#6c62ab,#3b3370);box-shadow:0 2px 3px rgba(0,0,0,.5);transition:transform .16s cubic-bezier(.3,1.4,.6,1)}
+.sw.up .track{background:rgba(255,200,74,.18)}
+.sw.up .track i{transform:translateX(100%);background:linear-gradient(180deg,#ffd978,#e0a420)}
+.sw .st{font:600 clamp(.48rem,2.4cqh,.62rem) var(--f-hw);letter-spacing:.06em;width:26px;text-align:left;flex:none}
+.sw.up .st{color:var(--fuse)}
+.sw.moved .track{box-shadow:inset 0 2px 4px rgba(0,0,0,.5),0 0 0 2px var(--fuse)}
 
 /* esito */
 .verdict{display:grid;justify-items:center;gap:8px;text-align:center}
-.verdict .orb{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;font:400 3rem/1 var(--f-display);color:var(--bg)}
+.verdict .orb{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;font:400 2.9rem/1 var(--f-display);color:var(--bg)}
 .verdict .orb.green{background:var(--go);box-shadow:0 0 30px var(--go)}
 .verdict .orb.red{background:var(--hot);box-shadow:0 0 30px var(--hot);color:var(--white)}
 .verdict .orb.grey{background:var(--panel-2);color:var(--mute)}
 
 /* foglio carte */
 .sheet{position:fixed;inset:0;z-index:5;background:var(--bg);display:flex;justify-content:center;padding:0 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-.sheet-in{width:100%;max-width:480px;display:flex;flex-direction:column;gap:12px}
+.sheet-in{width:100%;max-width:480px;height:100%;max-height:900px;margin:auto;display:flex;flex-direction:column;gap:10px}
 .tabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;background:var(--panel);padding:4px;border-radius:14px;flex:none}
-.tab{height:40px;border:0;border-radius:10px;background:transparent;color:var(--mute);font:500 .92rem var(--f-body);cursor:pointer}
+.tab{height:38px;border:0;border-radius:10px;background:transparent;color:var(--mute);font:500 .9rem var(--f-body);cursor:pointer;display:grid;place-items:center;line-height:1.05}
 .tab.on{background:var(--panel-2);color:var(--ink)}
-.sab-btn{min-height:64px;height:auto;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 16px;text-align:left}
-.sab-btn small{font-weight:400;font-size:.82rem;color:var(--mute)}
+.tab .ok{color:var(--go)} .tab .bad{color:var(--hot)}
+.sab-btn{min-height:62px;height:auto;flex-direction:column;align-items:flex-start;gap:2px;padding:9px 16px;text-align:left}
+.sab-btn small{font-weight:400;font-size:.8rem;color:var(--mute)}
 
 /* fine bomba, voto, finale */
 .boom{font-family:var(--f-display);font-size:clamp(4rem,24vw,6.5rem);line-height:.9;text-align:center}
@@ -190,116 +272,23 @@ input[type=text]::placeholder{color:var(--mute);opacity:.7}
 .suspense span{font:400 6rem/1 var(--f-display);color:var(--fuse);animation:breathe 1.5s ease-in-out}
 @keyframes breathe{0%{transform:scale(.7);opacity:.2}50%{transform:scale(1.1);opacity:1}100%{transform:scale(1)}}
 .rows{display:grid;gap:4px;margin:0;padding:0;list-style:none}
-.rows li{display:flex;justify-content:space-between;gap:10px;padding:7px 12px;border-radius:10px;background:var(--panel);font-size:.92rem}
+.rows li{display:flex;justify-content:space-between;gap:10px;padding:7px 12px;border-radius:10px;background:var(--panel);font-size:.9rem}
 .rows li .r{color:var(--mute);white-space:nowrap}
 .ok,.rows li .r.ok{color:var(--go)} .bad,.rows li .r.bad{color:var(--hot)}
 .film li{display:grid;grid-template-columns:auto 1fr;gap:10px;justify-content:start}
-.film li .r{font-size:.8rem;padding-top:2px}
+.film li .r{font-size:.78rem;padding-top:2px}
 .film li.sab{background:rgba(255,91,61,.12)}
 .awards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.award{background:var(--panel);border-radius:14px;padding:10px 12px;display:grid;gap:2px}
-.award .t{font:400 1.05rem/1.1 var(--f-display);color:var(--fuse)}
-.award .w{font-weight:700}
-.award .y{font-size:.8rem;color:var(--mute)}
+.award{background:var(--panel);border-radius:14px;padding:9px 12px;display:grid;gap:2px}
+.award .t{font:400 1.02rem/1.1 var(--f-display);color:var(--fuse)}
+.award .w{font-weight:700;font-size:.92rem}
+.award .y{font-size:.78rem;color:var(--mute)}
 .qrbox{background:var(--white);padding:12px;border-radius:18px;width:min(240px,70vw,38vh);line-height:0;margin:0 auto}
 .qrbox svg{width:100%;height:auto;display:block}
 .cover{flex:1;display:grid;place-items:center;text-align:center;border:2px dashed var(--line);border-radius:20px}
-.rules{margin:0;padding-left:1.4em;display:grid;gap:10px;font-size:1rem}
+.rules{margin:0;padding-left:1.3em;display:grid;gap:9px;font-size:.98rem}
 .rules li::marker{font-family:var(--f-display);color:var(--hot)}
-/* bomba giocabile */
-.mods{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mods.rows-1{grid-template-rows:minmax(0,1fr)} .mods.rows-2{grid-template-rows:repeat(2,minmax(0,1fr))} .mods.rows-3{grid-template-rows:repeat(3,minmax(0,1fr))}
-.tile{position:relative;cursor:default;padding:8px 10px 10px;gap:4px;border:2px solid rgba(255,255,255,.04);
-  background:radial-gradient(circle at 9px 9px,#4a4080 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 9px) 9px,#4a4080 2px,transparent 2.5px),radial-gradient(circle at 9px calc(100% - 9px),#4a4080 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#4a4080 2px,transparent 2.5px),linear-gradient(180deg,#2b2350,#231c43)}
-.tile:active{transform:none}
-.tile.picked{border-color:rgba(255,200,74,.55)}
-.tile.flash-green{animation:fg 1.1s ease-out} .tile.flash-red{animation:fr 1.1s ease-out}
-@keyframes fg{0%{box-shadow:0 0 0 4px var(--go),0 0 30px var(--go)}100%{box-shadow:none}}
-@keyframes fr{0%{box-shadow:0 0 0 4px var(--hot),0 0 30px var(--hot);transform:translateX(-4px)}10%{transform:translateX(4px)}20%{transform:translateX(-3px)}30%{transform:none}100%{box-shadow:none}}
-.tile-h{padding:0 6px}
-.tile-h .id{font-size:1.25rem}
-.mod-body{flex:1;min-height:0;display:flex;align-items:stretch;justify-content:center}
-.mod-body{container-type:size}
-@container (max-height:150px){
- .mod-body .knob-wrap{flex-direction:row;justify-content:center;gap:6px}
- .mod-body .knob-wrap .kinfo{flex-direction:column;align-items:center;gap:6px}
- .mod-body .kinfo .lcd{flex-direction:column;align-items:center;gap:0;padding:2px 6px}
- .mod-body .lamp{flex-direction:column;gap:2px}
- .mod-body .knob-wrap .dial-box{flex:1 1 0;min-width:0;height:100%;width:auto}
-}
-.dial .knob-g[data-a]{cursor:pointer}
-.sh{display:block;width:1em;height:1em;flex:none}
-.cc{gap:5px;padding:2px 9px 2px 5px;line-height:1.25}
-.cc .sh{width:.82em;height:.82em}
-.wrow .wtag{width:18px;height:18px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--c);color:var(--t);box-shadow:0 0 0 1.5px rgba(255,255,255,.35);margin-right:6px;font-size:11px}
-.wrow.cut .wtag{opacity:.5}
-.arc .cap{grid-auto-flow:row;justify-items:center;align-content:center;gap:2px}
-.arc .capsh{display:block;font-size:clamp(.55rem,14cqw,.8rem);opacity:.9;line-height:0}
-.lamp i{display:grid;place-items:center;font-size:12px}
-.wlist{width:100%;max-width:340px;height:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;gap:clamp(2px,5cqh,18px)}
-.wrow{flex:0 1 34px;min-height:20px;display:flex;align-items:center;gap:0;border:0;background:transparent;border-radius:10px;padding:0 4px;cursor:pointer;color:var(--mute);font:700 .8rem var(--f-body)}
-.wrow.sel{background:rgba(255,200,74,.1)}
-.wrow:disabled{cursor:default}
-.wrow .wn{width:16px;text-align:left;flex:none}
-.wrow .term{width:8px;height:16px;border-radius:2px;background:#8f88bd;flex:none;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
-.wrow .wsvg{flex:1;min-width:0;height:100%;position:relative}
-.wrow .wsvg svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.wrow .wo{fill:none;stroke:rgba(255,255,255,.28);stroke-width:11;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.wrow .ws{fill:none;stroke-width:9;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.wrow .wsel{fill:none;stroke:var(--fuse);stroke-width:17;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.wrow .fray{fill:none;stroke:#e9a25a;stroke-width:1.8;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.wrow .wgly{position:absolute;left:12%;top:calc(50% - 1px);transform:translateY(-50%);font:700 .55rem/1 var(--f-body);font-style:normal;pointer-events:none}
-.wrow.cut .wgly{opacity:.5}
-.wrow.justcut .ws{animation:snapw .5s ease-out}
-svg.wires{width:100%;height:100%;overflow:visible}
-.wires .wo{fill:none;stroke:rgba(255,255,255,.28);stroke-width:11;stroke-linecap:round}
-.wires .ws{fill:none;stroke-width:9;stroke-linecap:round}
-.wires .wsel{fill:none;stroke:var(--fuse);stroke-width:17;stroke-linecap:round;opacity:.9}
-.wires .fray{stroke:#e9a25a;stroke-width:1.6;stroke-linecap:round}
-.wires .term{fill:#8f88bd;stroke:#1c1738;stroke-width:1}
-.wires .wn{fill:var(--mute);font:700 11px var(--f-body)}
-.wires .wg{font:700 8px var(--f-body);pointer-events:none}
-.wires .hitw{cursor:pointer}
-.wires .justcut .ws{animation:snapw .5s ease-out}
-@keyframes snapw{0%{filter:brightness(3)}100%{filter:none}}
-.arc-grid{width:100%;max-width:300px;height:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,minmax(0,130px));align-content:center;gap:8px}
-.arc-grid.wide{max-width:520px;grid-template-columns:repeat(4,1fr);grid-template-rows:minmax(0,130px)}
-.arc-cell{container-type:size;min-height:0;display:grid;place-items:center}
-.arc{width:min(100cqw,100cqh);height:min(100cqw,100cqh);border:0;border-radius:50%;padding:4px;cursor:pointer;background:#141029;box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 3px 0 rgba(0,0,0,.4)}
-.arc .cap{display:grid;place-content:center;width:100%;height:100%;border-radius:50%;color:var(--t);font:700 clamp(.6rem,16cqw,.9rem)/1.1 var(--f-body);letter-spacing:.02em;
-  background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.55),rgba(255,255,255,0) 32%),var(--c);box-shadow:inset 0 -5px 0 rgba(0,0,0,.28),0 4px 0 rgba(0,0,0,.35);transition:transform .08s}
-.arc .cap i{font-style:normal;font-size:.85em;opacity:.85}
-.arc.sel{outline:3px solid var(--fuse);outline-offset:2px}
-.arc.pressed .cap,.arc:active .cap{transform:translateY(3px);box-shadow:inset 0 -2px 0 rgba(0,0,0,.28),0 1px 0 rgba(0,0,0,.35)}
-.arc.justpressed .cap{animation:press .35s ease-out}
-@keyframes press{40%{transform:translateY(6px) scale(.94)}100%{transform:translateY(3px)}}
-.arc:disabled{cursor:default}
-.knob-wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;gap:4px}
-.knob-wrap.wide{flex-direction:row;justify-content:center;gap:16px}
-.kinfo{display:flex;align-items:center;gap:8px;flex:none}
-.knob-wrap.wide .kinfo{flex-direction:column}
-.kinfo .lcd{display:flex;align-items:baseline;gap:6px;background:#120e26;border:1px solid #3a3170;border-radius:8px;padding:2px 8px}
-.kinfo .lcd small{font-size:.65rem;color:var(--mute)}
-.kinfo .lcd b{font:400 1.25rem/1 var(--f-display);color:var(--fuse);text-shadow:0 0 8px rgba(255,200,74,.6)}
-.lamp{display:flex;align-items:center;gap:5px}
-.lamp i{width:20px;height:20px;border-radius:5px;background:var(--c);color:var(--t);font:700 .65rem/20px var(--f-body);text-align:center;font-style:normal;box-shadow:0 0 10px var(--c)}
-.lamp small{font-size:.65rem;color:var(--mute)}
-.dial-box{flex:1;min-height:0;min-width:0;width:100%;container-type:size;display:grid;place-items:center}
-.knob-wrap.wide .dial-box{flex:0 1 220px;height:100%;width:auto}
-svg.dial{width:min(100cqw,100cqh,240px);height:min(100cqw,100cqh,240px)}
-.dial .plate{fill:#1a1538;stroke:#3a3170;stroke-width:1.5}
-.dial .tick{stroke:#5b5296;stroke-width:2;stroke-linecap:round}
-.dial .tick.on{stroke:var(--fuse)}
-.dial .num text{fill:var(--mute);font:700 11px var(--f-body);text-anchor:middle;pointer-events:none}
-.dial .num.on text{fill:var(--fuse)}
-.dial .numhit{fill:transparent}
-.dial .num[data-a]{cursor:pointer}
-.dial .num[data-a]:hover .numhit{fill:rgba(255,255,255,.06)}
-.dial .knurl{fill:none;stroke:#110d24;stroke-width:4;stroke-dasharray:2.1 2.1}
-.dial .ptr{fill:var(--fuse)}
-.dial .knob-g{transform-origin:60px 60px;transform-box:view-box;transition:transform .35s cubic-bezier(.3,1.4,.6,1)}
-@media (max-height:620px){.frag{padding:8px 12px 10px;gap:4px}.fr{font-size:1rem;line-height:1.4}}
-@media (max-height:600px){.top{padding:8px 12px}.btn{height:48px}.tile{padding:8px 10px}.logo{font-size:1.7rem}}
+@media (max-height:620px){.frag{padding:9px 12px 10px;gap:5px}.fm{font-size:1rem;line-height:1.4}.btn{height:50px}.logo{font-size:1.7rem}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
@@ -354,31 +343,51 @@ const QR=(()=>{
   return{make,svg};
 })();
 
+
 (()=>{
 const ARTIFACT_URL='https://claude.ai/artifact/1YV6wy7b8ntZYCdRDiHw2S';
-const SAVE_KEY='tictac-traditore-partita',NAMES_KEY='tictac-traditore-nomi';
+const SAVE_KEY='tictac-traditore-partita',OPT_KEY='tictac-traditore-opzioni';
 const $app=document.getElementById('app');
 const COL={rosso:'#e8452c',blu:'#3f7cf0',giallo:'#f2c832',bianco:'#f1eee6',nero:'#141218'};
 const TXT={rosso:'#fff4ec',blu:'#f0f4ff',giallo:'#1c1738',bianco:'#1c1738',nero:'#f4efe3'};
-const GLY={rosso:'▲',blu:'■',giallo:'●',bianco:'◆',nero:'★'};
-const WC=['rosso','blu','giallo','bianco','nero'],LEDC=['rosso','blu','giallo'],LABELS=['STOP','VAI','ARMA','RESET'];
+const SHAPES={rosso:'<path d="M12 3.6 20.6 18.4H3.4Z"/>',blu:'<rect x="5" y="5" width="14" height="14" rx="1.6"/>',giallo:'<circle cx="12" cy="12" r="7.6"/>',bianco:'<path d="M12 2.8 21.2 12 12 21.2 2.8 12Z"/>',nero:'<path d="M12 2.6l2.75 5.75 6.3.75-4.65 4.35 1.25 6.25L12 16.6l-5.65 3.1 1.25-6.25L2.95 9.1l6.3-.75Z"/>'};
+const SH=c=>`<svg class="sh" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${SHAPES[c]}</svg>`;
+const C=c=>`<span class="cc" style="--c:${COL[c]};--t:${TXT[c]}">${SH(c)}${c}</span>`;
+const K=l=>`<span class="kl">${l}</span>`;
+const WC=['rosso','blu','giallo','bianco','nero'];
+const LABELS=['STOP','VAI','ARMA','RESET'];
+const DIRS=['su','giu','sin','des'];
+const DGLY={su:'↑',giu:'↓',sin:'←',des:'→'};
+const DNAME={su:'su',giu:'giù',sin:'sinistra',des:'destra'};
+const OPP={su:'giu',giu:'su',sin:'des',des:'sin'};
+const CWO=['su','des','giu','sin'];
+const D=d=>`<span class="dir">${DGLY[d]}</span>`;
 const CARDKEYS=['scoperte','muto','testimone'];
 const CARDS={
   scoperte:{t:'A carte scoperte',d:'Al suo turno tutti vedono lo schermo.'},
   muto:{t:'Muto',d:'Al suo turno non può descrivere la bomba.'},
   testimone:{t:'Testimone',d:'Al suo turno guardi lo schermo con lui. Si saprà che sei tu.'}
 };
-const SABS_INFO={red:['Falso rosso','La prossima mossa giusta mostra rosso.'],swap:['Scambio cavi','Due cavi cambiano posto.'],alibi:['Verde alibi','La tua mossa mostra verde ma non risolve.']};
-const TYPES=['cavi','pulsanti','pomello'],TITLES=['Cavi','Pulsanti','Pomello'];
-const LEN=[[2,1,2],[2,3,4],[1,2,2]];
-const MODS=[3,4,5],SABS=[1,2,2],MAXHOLD=2;
+const TYPES=['cavi','pulsanti','pomello','sequenza','interruttori'];
+const TITLES=['Cavi','Pulsanti','Pomello','Sequenza','Interruttori'];
+const LEN=[[2,2,1],[2,1,2],[1,1,1],[4,3,4],[3,2,3]];
+const SABS=[1,2,2],MAXHOLD=2;
+const DIFFS={
+  facile:{nome:'Facile',mods:[2,3,4],wires:[3,3],sw:[4,4],seq:[3,3],types:3,fuse:45,err:4},
+  media:{nome:'Media',mods:[3,4,5],wires:[3,4],sw:[4,5],seq:[3,4],types:4,fuse:30,err:3},
+  tosta:{nome:'Tosta',mods:[4,5,5],wires:[4,5],sw:[5,5],seq:[4,5],types:5,fuse:20,err:3}
+};
+const DKEYS=['facile','media','tosta'];
 const rnd=n=>Math.floor(Math.random()*n),pick=a=>a[rnd(a.length)];
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const between=(a,b)=>a+rnd(b-a+1);
 const ICON={
-  cavi:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 7h18M3 12h7m4 0h7M3 17h18"/></svg>',
-  pulsanti:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="7" r="3.4"/><circle cx="17" cy="7" r="3.4"/><circle cx="7" cy="17" r="3.4"/><circle cx="17" cy="17" r="3.4"/></svg>',
-  pomello:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 12V5"/></svg>',
+  cavi:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 7h18M3 12h7m4 0h7M3 17h18"/></svg>',
+  pulsanti:'<svg class="ic" viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="7" r="3.4"/><circle cx="17" cy="7" r="3.4"/><circle cx="7" cy="17" r="3.4"/><circle cx="17" cy="17" r="3.4"/></svg>',
+  pomello:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 12V5"/></svg>',
+  sequenza:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l4-4 4 4M8 5v9a4 4 0 0 0 4 4h8m0 0-3-3m3 3-3 3"/></svg>',
+  interruttori:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2.5" y="6" width="19" height="5.5" rx="2.75"/><circle cx="17" cy="8.75" r="1.8" fill="currentColor"/><rect x="2.5" y="14" width="19" height="5.5" rx="2.75"/><circle cx="7" cy="16.75" r="1.8" fill="currentColor"/></svg>',
   back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
   qr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v1M14 20h1M18 18h3v3"/></svg>',
   lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
@@ -397,6 +406,8 @@ const sfx={
   cut:()=>{noise(.12,4000,.5);tone(2400,.03,'square',.05);tone(1800,.04,'square',.05,.05)},
   thunk:()=>{tone(180,.09,'square',.1);noise(.05,800,.25)},
   clunk:()=>{tone(320,.05,'square',.08);tone(160,.12,'triangle',.12,.05)},
+  flick:()=>{tone(1200,.025,'square',.05);tone(700,.04,'square',.05,.03)},
+  beep:()=>tone(1320,.05,'square',.05),
   heart:()=>{tone(62,.14,'sine',.45);tone(55,.16,'sine',.35,.22)},
   defuse:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.12,i*.12))},
   boom:()=>{const a=au();if(!a)return;try{const len=a.sampleRate*1.6,buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.2);const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();f.type='lowpass';f.frequency.value=900;g.gain.value=.9;s.buffer=buf;s.connect(f).connect(g).connect(a.destination);s.start();tone(55,1.2,'sine',.5)}catch(e){}}
@@ -406,50 +417,147 @@ let wakeLock=null;
 async function wake(){try{if('wakeLock' in navigator&&!wakeLock){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>{wakeLock=null})}}catch(e){wakeLock=null}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&G)wake()});
 
-/* ---------- manuale: ogni regola = 2 frammenti "Se / Allora" ---------- */
-const SHAPES={rosso:'<path d="M12 3.6 20.6 18.4H3.4Z"/>',blu:'<rect x="5" y="5" width="14" height="14" rx="1.6"/>',giallo:'<circle cx="12" cy="12" r="7.6"/>',bianco:'<path d="M12 2.8 21.2 12 12 21.2 2.8 12Z"/>',nero:'<path d="M12 2.6l2.75 5.75 6.3.75-4.65 4.35 1.25 6.25L12 16.6l-5.65 3.1 1.25-6.25L2.95 9.1l6.3-.75Z"/>'};
-const SH=c=>`<svg class="sh" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${SHAPES[c]}</svg>`;
-const C=c=>`<span class="cc" style="--c:${COL[c]};--t:${TXT[c]}">${SH(c)}${c}</span>`;
-const K=l=>`<span class="kl">${l}</span>`;
-function buildRule(type,t,p){
-  const W=i=>WC[i],L=i=>LABELS[i];let f,solve;
-  if(type===0){
-    if(t===0){const A=W(p[0]),k=p[1];f=[{s:`c'è almeno un cavo ${C(A)}`,a:`taglia l'ultimo cavo ${C(A)}`},{s:`nessun cavo ${C(A)}`,a:`taglia il cavo n° ${k}`}];solve=ws=>{let i=-1;ws.forEach((x,j)=>{if(x.c===A)i=j});return i<0?k-1:i}}
-    else if(t===1){const A=W(p[0]);f=[{s:`ci sono N cavi ${C(A)}`,a:`taglia il cavo n° N`},{s:`nessun cavo ${C(A)}`,a:`taglia l'ultimo cavo`}];solve=ws=>{const c=ws.filter(x=>x.c===A).length;return c?c-1:ws.length-1}}
-    else{const A=W(p[0]),B=W(p[1]);f=[{s:`più cavi ${C(A)} che ${C(B)}`,a:`taglia il primo cavo ${C(A)}`},{s:`cavi ${C(A)} non più dei ${C(B)}`,a:`taglia l'ultimo cavo`}];solve=ws=>{const a=ws.filter(x=>x.c===A).length,b=ws.filter(x=>x.c===B).length;return a>b?ws.findIndex(x=>x.c===A):ws.length-1}}
-  }else if(type===1){const idx=(bs,l)=>bs.findIndex(x=>x.l===l);
-    if(t===0){const A=W(p[0]),l=L(p[1]);f=[{s:`c'è un pulsante ${C(A)}`,a:`premi il primo ${C(A)} (in ordine di lettura)`},{s:`nessun pulsante ${C(A)}`,a:`premi ${K(l)}`}];solve=bs=>{const i=bs.findIndex(x=>x.c===A);return i>=0?i:idx(bs,l)}}
-    else if(t===1){const l1=L(p[0]),A=W(p[1]),l2=L(p[2]);f=[{s:`${K(l1)} non è ${C(A)}`,a:`premi ${K(l1)}`},{s:`${K(l1)} è ${C(A)}`,a:`premi ${K(l2)}`}];solve=bs=>{const i=idx(bs,l1);return bs[i].c===A?idx(bs,l2):i}}
-    else{const A=W(p[0]),ls=[L(p[1]),L(p[2]),L(p[3])];f=[{s:`nessun pulsante ${C(A)}`,a:`premi ${K(ls[0])}`},{s:`1 pulsante ${C(A)}<br>2 o più`,a:`premi ${K(ls[1])}<br>premi ${K(ls[2])}`}];solve=bs=>{const c=bs.filter(x=>x.c===A).length;return idx(bs,ls[Math.min(c,2)])}}
-  }else{
-    if(t===0){const k=p[0],hi=9-k,lo=10-k;f=[{s:`display da 1 a ${hi}`,a:`gira su display + ${k}`},{s:`display da ${lo} a 9`,a:`gira su display − ${lo}`}];solve=d=>(d+k)%10}
-    else if(t===1){const a=p[0],b2=p[1];f=[{s:`display pari`,a:`gira su ${a}`},{s:`display dispari`,a:`gira su ${b2}`}];solve=d=>d%2===0?a:b2}
-    else{const A=W(p[0]),a=p[1];f=[{s:`spia ${C(A)}`,a:`gira su ${a}`},{s:`spia di un altro colore`,a:`gira sul numero del display`}];solve=(d,led)=>led===A?a:d}
+/* ---------- il manuale ----------
+   Ogni regola vale per un tipo di modulo ed è spezzata in due frammenti che servono sempre tutti e due:
+   - catena (cavi, pulsanti, pomello): il primo definisce una chiave, il secondo dice cosa farne;
+   - a pezzi (sequenza, interruttori): ognuno conosce una parte della risposta.
+   Le condizioni guardano solo fatti che non cambiano: la targhetta della bomba e i colori presenti. */
+function buildRule(ti,t,p){
+  let f0,f1,solve,needs=null;
+  if(ti===0){ // CAVI
+    const f2=t===2?p[0]:p[1],col=t===2?null:WC[p[0]];
+    if(t===0){f0={role:'osserva',tag:'Il cavo chiave',main:`Il <span class="key">cavo chiave</span> è l'<b>ultimo</b> cavo ${C(col)}.`};needs={wireCol:col}}
+    else if(t===1){f0={role:'osserva',tag:'Il cavo chiave',main:`Il <span class="key">cavo chiave</span> è il <b>primo</b> cavo ${C(col)}.`};needs={wireCol:col}}
+    else {f0={role:'osserva',tag:'Il cavo chiave',main:`Il <span class="key">cavo chiave</span> è il <b>primo</b> cavo del colore della <b>targhetta</b>.`};needs={wireTag:true}}
+    const key=(m,tag)=>{const c=t===2?tag.c:col;let i=-1;m.wires.forEach((w,j)=>{if(w.c===c&&(t===0||i<0))i=j});return i<0?0:i};
+    if(f2===0){f1={role:'agisci',tag:'Taglia',main:`Taglia il <span class="key">cavo chiave</span>.`};solve=(m,tag)=>key(m,tag)}
+    else if(f2===1){f1={role:'agisci',tag:'Taglia',main:`Taglia il cavo <b>subito sotto</b> quello chiave.`,note:'Se il cavo chiave è l\'ultimo, taglia il n° 1.'};solve=(m,tag)=>(key(m,tag)+1)%m.wires.length}
+    else {f1={role:'agisci',tag:'Taglia',main:`Taglia il cavo <b>subito sopra</b> quello chiave.`,note:'Se il cavo chiave è il n° 1, taglia l\'ultimo.'};solve=(m,tag)=>(key(m,tag)-1+m.wires.length)%m.wires.length}
   }
-  return{type:TYPES[type],title:TITLES[type],ti:type,t,p,frags:f,solve};
+  else if(ti===1){ // PULSANTI
+    const f2=t===1?p[0]:p[1];
+    if(t===0){f0={role:'osserva',tag:'Il colore chiave',main:`Il <span class="key">colore chiave</span> è quello del pulsante ${K(LABELS[p[0]])}.`}}
+    else if(t===1){f0={role:'osserva',tag:'Il colore chiave',main:`Il <span class="key">colore chiave</span> è il colore della <b>targhetta</b>.`};needs={btnTag:true}}
+    else {f0={role:'osserva',tag:'Il colore chiave',main:`Il <span class="key">colore chiave</span> è quello del pulsante <b>n° ${p[0]+1}</b>.`}}
+    const keyc=(m,tag)=>t===0?m.btns.find(b=>b.l===LABELS[p[0]]).c:t===1?tag.c:m.btns[p[0]].c;
+    needs={btnKey:keyc};
+    if(f2===0){f1={role:'agisci',tag:'Premi',main:`Premi il pulsante del <span class="key">colore chiave</span> con il <b>numero più basso</b>.`};solve=(m,tag)=>{const c=keyc(m,tag);return m.btns.findIndex(b=>b.c===c)}}
+    else {f1={role:'agisci',tag:'Premi',main:`Premi il pulsante del <span class="key">colore chiave</span> con il <b>numero più alto</b>.`};solve=(m,tag)=>{const c=keyc(m,tag);let i=0;m.btns.forEach((b,j)=>{if(b.c===c)i=j});return i}}
+  }
+  else if(ti===2){ // POMELLO
+    const f2=p[0];
+    if(t===0)f0={role:'osserva',tag:'Il numero chiave',main:`Il <span class="key">numero chiave</span> è il numero della <b>targhetta</b>.`};
+    else if(t===1)f0={role:'osserva',tag:'Il numero chiave',main:`Il <span class="key">numero chiave</span> è il numero del <b>display</b>.`};
+    else f0={role:'osserva',tag:'Il numero chiave',main:`Il <span class="key">numero chiave</span> è la <b>differenza</b> tra display e targhetta.`,note:'Senza segno: il più grande meno il più piccolo.'};
+    const keyn=(m,tag)=>t===0?tag.n:t===1?m.d:Math.abs(m.d-tag.n);
+    if(f2===0){f1={role:'agisci',tag:'Gira',main:`Gira il pomello sul <span class="key">numero chiave</span>.`};solve=(m,tag)=>keyn(m,tag)}
+    else {f1={role:'agisci',tag:'Gira',main:`Parti dal <b>9</b> e torna indietro del <span class="key">numero chiave</span>.`,note:'Numero chiave 0 → 9, 1 → 8, e così via.'};solve=(m,tag)=>9-keyn(m,tag)}
+  }
+  else if(ti===3){ // SEQUENZA
+    const d1=DIRS[p[0]],d2=DIRS[p[1]];let cond,test;
+    if(t===0){cond=`la targhetta è ${C(WC[p[2]])}`;test=(m,tag)=>tag.c===WC[p[2]]}
+    else if(t===1){cond=`il numero della targhetta è <b>pari</b>`;test=(m,tag)=>tag.n%2===0}
+    else {cond=`i passi sono <b>${p[2]}</b>`;test=m=>m.len===p[2]}
+    const f2=t===1?p[2]:p[3];
+    f0={role:'agisci',tag:'Il primo passo',main:`${D(d1)} se ${cond}, altrimenti ${D(d2)}.`};
+    const first=(m,tag)=>test(m,tag)?d1:d2;
+    const rest=[
+      {main:`Ogni passo dopo il primo <b>gira in senso orario</b>.`,note:`${DGLY.su} ${DGLY.des} ${DGLY.giu} ${DGLY.sin} e si ricomincia.`,f:(d,i)=>CWO[(CWO.indexOf(d)+i)%4]},
+      {main:`Ogni passo dopo il primo <b>gira in senso antiorario</b>.`,note:`${DGLY.su} ${DGLY.sin} ${DGLY.giu} ${DGLY.des} e si ricomincia.`,f:(d,i)=>CWO[(CWO.indexOf(d)-i+8)%4]},
+      {main:`I passi si <b>alternano</b> tra il primo e il suo opposto.`,f:(d,i)=>i%2?OPP[d]:d},
+      {main:`Tutti i passi sono <b>uguali al primo</b>, tranne l'ultimo che è il suo opposto.`,f:(d,i,L)=>i===L-1?OPP[d]:d}
+    ][f2];
+    f1={role:'agisci',tag:'I passi dopo',main:rest.main,note:rest.note};
+    solve=(m,tag)=>{const d0=first(m,tag);return Array.from({length:m.len},(_,i)=>rest.f(d0,i,m.len))};
+  }
+  else { // INTERRUTTORI
+    const f2=t===2?p[0]:(t===0?p[1]:p[0]),k=t===0?p[2]:p[1],col=t===1?null:WC[t===0?p[0]:p[2]];
+    if(t===0){f0={role:'agisci',tag:'Vanno su',main:`Vanno su gli interruttori ${C(col)}.`}}
+    else if(t===1)f0={role:'agisci',tag:'Vanno su',main:`Vanno su gli interruttori del colore della <b>targhetta</b>.`};
+    else f0={role:'agisci',tag:'Vanno su',main:`Vanno su gli interruttori che <b>non</b> sono ${C(col)}.`};
+    const keyc=tag=>t===1?tag.c:col;
+    const setA=(m,tag)=>m.sw.map(s=>t===2?s.c!==keyc(tag):s.c===keyc(tag));
+    const extras=[
+      {main:`Va su <b>anche</b> l'interruttore <b>n° ${k+1}</b>.`,f:m=>Math.min(k,m.sw.length-1)},
+      {main:`Va su <b>anche</b> l'<b>ultimo</b> interruttore.`,f:m=>m.sw.length-1},
+      {main:`Va su <b>anche</b> il <b>primo</b> interruttore.`,f:()=>0}
+    ][f2];
+    f1={role:'agisci',tag:'E in più',main:extras.main,note:'Tutti gli altri vanno giù.'};
+    solve=(m,tag)=>{const a=setA(m,tag);a[extras.f(m)]=true;return a};
+    needs={swKey:keyc,swNot:t===2,swExtra:extras.f};
+  }
+  return{ti,t,p,type:TYPES[ti],title:TITLES[ti],frags:[f0,f1],solve,needs};
 }
-function makeRules(){
-  const w=rnd(3),pb=rnd(3),k=rnd(3);
-  const wp=w===0?[rnd(5),1+rnd(3)]:w===1?[rnd(5)]:shuffle([0,1,2,3,4]).slice(0,2);
-  const L=shuffle([0,1,2,3]);
-  const pp=pb===0?[rnd(5),L[0]]:pb===1?[L[0],rnd(5),L[1]]:[rnd(5),L[0],L[1],L[2]];
-  const kp=k===0?[1+rnd(4)]:k===1?shuffle([0,1,2,3,4,5,6,7,8,9]).slice(0,2):[rnd(3),rnd(10)];
-  return[buildRule(0,w,wp),buildRule(1,pb,pp),buildRule(2,k,kp)];
+function randRule(ti){
+  const t=rnd(3),L=LEN[ti][t],p=[];
+  if(ti===0){if(t<2){p.push(rnd(5));p.push(rnd(3))}else p.push(rnd(3))}
+  else if(ti===1){if(t===0){p.push(rnd(4));p.push(rnd(2))}else if(t===1)p.push(rnd(2));else{p.push(rnd(4));p.push(rnd(2))}}
+  else if(ti===2)p.push(rnd(2));
+  else if(ti===3){const d=shuffle([0,1,2,3]);p.push(d[0]);p.push(d[1]);if(t===0)p.push(rnd(5));else if(t===2)p.push(3+rnd(3));p.push(rnd(4));}
+  else {if(t===0){p.push(rnd(5));p.push(rnd(3));p.push(rnd(4))}else if(t===1){p.push(rnd(3));p.push(rnd(4))}else{p.push(rnd(3));p.push(rnd(4));p.push(rnd(5))}}
+  while(p.length<L)p.push(0);
+  return buildRule(ti,t,p.slice(0,L));
 }
-function dealFrags(players){
-  const n=players.length,F=[0,1,2,3,4,5];
-  for(const strict of[true,false])for(let tries=0;tries<3000;tries++){
-    const base=Math.floor(2*n/6);let pool=[];F.forEach(f=>{for(let k=0;k<base;k++)pool.push(f)});
-    pool=shuffle(pool.concat(shuffle(F).slice(0,2*n-pool.length)));
-    const hands=[];let ok=true;
-    for(let i=0;i<n;i++){const a=pool[2*i],b=pool[2*i+1];if(a===b||(strict&&(a>>1)===(b>>1))){ok=false;break}hands.push([a,b].sort())}
+
+/* ---------- distribuzione dei frammenti ----------
+   Ogni frammento deve stare in mano ad almeno un artificiere, altrimenti il modulo è irrisolvibile
+   o verificabile solo dal traditore. Nessuno riceve le due metà della stessa regola. */
+function dealFrags(players,nRules){
+  const F=nRules*2,n=players.length,art=players.map((p,i)=>i).filter(i=>!players[i].sab);
+  for(let tries=0;tries<4000;tries++){
+    const hands=players.map(()=>[]),slots=[];
+    art.forEach(i=>{slots.push(i);slots.push(i)});
+    const order=shuffle([...Array(F).keys()]),pool=shuffle(slots);let ok=true;
+    for(const f of order){
+      const cand=pool.filter(i=>hands[i].length<2&&!hands[i].some(x=>(x>>1)===(f>>1)&&x!==f)&&!hands[i].includes(f));
+      if(!cand.length){ok=false;break}
+      hands[pick(cand)].push(f);
+    }
     if(!ok)continue;
-    const cov=new Set();hands.forEach((h,i)=>{if(!players[i].sab)h.forEach(f=>cov.add(f))});
-    if(cov.size<6)continue;
-    hands.forEach((h,i)=>players[i].frags=h);return;
+    const all=[...Array(F).keys()];
+    for(let i=0;i<n;i++)while(hands[i].length<2){
+      const cand=all.filter(f=>!hands[i].includes(f)&&!hands[i].some(x=>(x>>1)===(f>>1)));
+      if(!cand.length){ok=false;break}
+      hands[i].push(pick(cand));
+    }
+    if(!ok)continue;
+    const cov=new Set();art.forEach(i=>hands[i].forEach(f=>cov.add(f)));
+    if(cov.size<F)continue;
+    players.forEach((p,i)=>p.frags=hands[i].sort((a,b)=>a-b));return true;
   }
-  players.forEach((p,i)=>p.frags=[(2*i)%6,(2*i+3)%6].sort());
+  players.forEach((p,i)=>p.frags=[(2*i)%F,(2*i+3)%F].sort((a,b)=>a-b));return false;
 }
+
+/* ---------- moduli ---------- */
+function makeModule(type,id,d,rule,tag){
+  const base={id,type,solved:false,shown:'grey',fake:false};
+  let m;
+  if(type==='cavi'){const n=between(d.wires[0],d.wires[1]);m={...base,wires:Array.from({length:n},()=>({c:pick(WC),cut:false}))};
+    const need=rule.needs&&(rule.needs.wireCol||(rule.needs.wireTag?tag.c:null));
+    if(need&&!m.wires.some(w=>w.c===need))m.wires[rnd(n)].c=need;}
+  else if(type==='pulsanti'){m={...base,btns:shuffle(LABELS).map(l=>({l,c:pick(WC)})),pressed:null};
+    // il colore chiave deve stare su almeno due pulsanti, altrimenti il secondo frammento non serve
+    if(rule.needs&&rule.needs.btnTag&&!m.btns.some(b=>b.c===tag.c))m.btns[rnd(4)].c=tag.c;
+    for(let g=0;g<3;g++){const key=rule.needs.btnKey(m,tag),have=m.btns.map((b,i)=>i).filter(i=>m.btns[i].c===key);
+      if(have.length>=2)break;
+      const free=m.btns.map((b,i)=>i).filter(i=>!have.includes(i));m.btns[pick(free)].c=key}
+    if(m.btns.every(b=>b.c===m.btns[0].c))m.btns[rnd(4)].c=pick(WC.filter(c=>c!==m.btns[0].c));}
+  else if(type==='pomello')m={...base,d:rnd(10),pos:rnd(10)};
+  else if(type==='sequenza'){m={...base,len:between(d.seq[0],d.seq[1])}}
+  else{const n=between(d.sw[0],d.sw[1]);m={...base,sw:Array.from({length:n},()=>({c:pick(WC),up:Math.random()<.5}))};
+    const key=rule.needs.swKey(tag),alt=WC.filter(c=>c!==key),ex=rule.needs.swExtra(m);
+    // la prima regola deve selezionare qualcosa, e la seconda deve aggiungere un interruttore non già selezionato
+    if(!m.sw.some(s=>s.c===key))m.sw[(ex+1)%n].c=key;
+    if(rule.needs.swNot){if(!m.sw.some(s=>s.c!==key))m.sw[(ex+1)%n].c=pick(alt);m.sw[ex].c=key}
+    else{m.sw[ex].c=pick(alt);if(!m.sw.some(s=>s.c===key))m.sw[(ex+1)%n].c=key}}
+  // la risposta non deve coincidere con lo stato iniziale
+  const a=rule.solve(m,tag);
+  if(type==='pomello'&&m.pos===a)m.pos=(a+3+rnd(5))%10;
+  if(type==='interruttori'&&m.sw.every((s,i)=>s.up===a[i])){const j=rnd(m.sw.length);m.sw[j].up=!m.sw[j].up}
+  return m;
+}
+const sameAns=(a,b)=>Array.isArray(a)?a.length===b.length&&a.every((x,i)=>x===b[i]):a===b;
+function answer(m){return G.rules[G.ruleOf[m.type]].solve(m,G.bomb.tag)}
 
 /* ---------- carta sul proprio telefono ---------- */
 function cardBase(){const h=location.hostname||'';if(/^https?:$/.test(location.protocol)&&h&&!/claude/i.test(h))return location.origin+location.pathname;return ARTIFACT_URL}
@@ -461,42 +569,52 @@ function encodeCard(pi){
 function decodeCard(tok){
   try{if(!/^c\d{6,}$/.test(tok))return null;const key=+tok[1];const d=tok.slice(2).split('').map((c,i)=>((+c-key-i*3)%10+20)%10);
     let i=2;const out={sab:d[0]===1,card:CARDKEYS[d[1]],frags:[]};
-    for(let k=0;k<2;k++){const ty=d[i++],t=d[i++],h=d[i++];if(ty>2||t>2||h>1)return null;const p=d.slice(i,i+LEN[ty][t]);i+=LEN[ty][t];const r=buildRule(ty,t,p);out.frags.push({type:r.type,title:r.title,f:r.frags[h]})}
+    for(let k=0;k<2;k++){const ty=d[i++],t=d[i++],h=d[i++];if(ty>4||t>2||h>1)return null;const p=d.slice(i,i+LEN[ty][t]);i+=LEN[ty][t];const r=buildRule(ty,t,p);out.frags.push({type:r.type,title:r.title,f:r.frags[h]})}
     return out.card?out:null}catch(e){return null}
 }
 
-/* ---------- stato e salvataggio ---------- */
-const S={screen:'setup',n:5,fuse:30,names:Array(8).fill(''),pick:null,hold:false,sheet:false,tab:'frag',swapPick:false,vc:'idle',disc:60,qr:false,cardShow:false,card:null,suspense:false,endTab:'film',filmBomb:0};
-try{const nn=JSON.parse(localStorage.getItem(NAMES_KEY)||'null');if(nn&&Array.isArray(nn.names)){nn.names.slice(0,8).forEach((x,i)=>S.names[i]=String(x||''));if(nn.n>=4&&nn.n<=8)S.n=nn.n;if([0,20,30,45].includes(nn.fuse))S.fuse=nn.fuse}}catch(e){}
-const saveNames=()=>{try{localStorage.setItem(NAMES_KEY,JSON.stringify({names:S.names,n:S.n,fuse:S.fuse}))}catch(e){}};
+/* ---------- stato ---------- */
+const S={screen:'setup',n:5,sab:1,diff:'media',fuse:30,tut:true,names:Array(8).fill(''),
+  pick:null,hold:false,sheet:false,tab:'frag',swapPick:false,vc:'idle',disc:60,qr:false,cardShow:false,card:null,suspense:false,endTab:'film',filmBomb:0,manRule:0};
+try{const o=JSON.parse(localStorage.getItem(OPT_KEY)||'null');if(o){if(Array.isArray(o.names))o.names.slice(0,8).forEach((x,i)=>S.names[i]=String(x||''));
+  if(o.n>=4&&o.n<=8)S.n=o.n;if([0,15,20,25,30,35,40,45,50,55,60].includes(o.fuse))S.fuse=o.fuse;if(DKEYS.includes(o.diff))S.diff=o.diff;if(typeof o.tut==='boolean')S.tut=o.tut;if(o.sab>=1&&o.sab<=3)S.sab=o.sab}}catch(e){}
+const saveOpt=()=>{try{localStorage.setItem(OPT_KEY,JSON.stringify({names:S.names,n:S.n,fuse:S.fuse,diff:S.diff,tut:S.tut,sab:S.sab}))}catch(e){}};
+const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent);
 let G=null,tickTimer=null,discTimer=null,fuseTimer=null;
 const nm=i=>esc(G.players[i].name);
+const sugSab=n=>n>=6?2:1;
+const maxTypes=(n,s)=>Math.max(2,Math.min(5,n-s));
 function save(){try{if(!G)return;if(S.screen==='game-end'){localStorage.removeItem(SAVE_KEY);return}
-  localStorage.setItem(SAVE_KEY,JSON.stringify({v:6,screen:S.screen,revealI:S.revealI,accused:S.accused,G:{...G,rules:G.rules.map(r=>({ti:r.ti,t:r.t,p:r.p}))}}))}catch(e){}}
-function loadSave(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');return s&&s.v===6&&s.G?s:null}catch(e){return null}}
+  localStorage.setItem(SAVE_KEY,JSON.stringify({v:7,screen:S.screen,revealI:S.revealI,accused:S.accused,G:{...G,rules:G.rules.map(r=>({ti:r.ti,t:r.t,p:r.p}))}}))}catch(e){}}
+function loadSave(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');return s&&s.v===7&&s.G?s:null}catch(e){return null}}
 function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
+function hydrate(g){g.rules=g.rules.map(r=>buildRule(r.ti,r.t,r.p));g.ruleOf={};g.rules.forEach((r,i)=>g.ruleOf[r.type]=i);return g}
 
 function newGame(){
   const n=S.n,names=Array.from({length:n},(_,i)=>(S.names[i]||'').trim()||`Giocatore ${i+1}`);
-  const nSab=n>=6?2:1,sabIdx=shuffle([...Array(n).keys()]).slice(0,nSab);
+  const d=DIFFS[S.diff],nSab=Math.min(S.sab,n-2),sabIdx=shuffle([...Array(n).keys()]).slice(0,nSab);
   const players=names.map((name,i)=>({name,sab:sabIdx.includes(i),frags:[],card:pick(CARDKEYS),cardUsed:false,out:false}));
-  G={players,rules:makeRules(),bombNo:0,results:[],nextPenalty:0,bomb:null,turn:null,pending:{},fuse:S.fuse,past:[]};
-  dealFrags(players);saveNames();S.revealI=0;S.qr=false;S.endTab='film';S.filmBomb=0;S.manRule=0;wake();go('reveal-pass');
+  const nTypes=Math.min(d.types,maxTypes(n,nSab));
+  const types=shuffle([0,1,2,3,4]).slice(0,nTypes);
+  const rules=types.map(randRule);
+  G={players,rules,types:types.map(i=>TYPES[i]),bombNo:0,results:[],nextPenalty:0,bomb:null,turn:null,pending:{},fuse:S.fuse,diff:S.diff,tut:S.tut,past:[],seen:[]};
+  G.ruleOf={};rules.forEach((r,i)=>G.ruleOf[r.type]=i);
+  dealFrags(players,rules.length);saveOpt();
+  S.revealI=0;S.qr=false;S.endTab='film';S.filmBomb=0;S.manRule=0;wake();go('reveal-pass');
 }
-function makeModule(type,id){
-  const base={id,type,solved:false,shown:'grey',fake:false};
-  if(type==='cavi')return{...base,wires:Array.from({length:3+rnd(2)},()=>({c:pick(WC),cut:false}))};
-  if(type==='pulsanti')return{...base,btns:shuffle(LABELS).map(l=>({l,c:pick(WC)})),pressed:null};
-  const m={...base,d:1+rnd(9),led:pick(LEDC),pos:rnd(10)};const a=answer(m);if(m.pos===a)m.pos=(a+3+rnd(5))%10;return m;
-}
-function answer(m){if(m.type==='cavi')return G.rules[0].solve(m.wires);if(m.type==='pulsanti')return G.rules[1].solve(m.btns);return G.rules[2].solve(m.d,m.led)}
 function newBomb(){
-  const b=G.bombNo,nMod=MODS[b];
-  let types=shuffle([...TYPES]);while(types.length<nMod)types.push(pick(TYPES));types=shuffle(types);
+  const b=G.bombNo,d=DIFFS[G.diff],nMod=d.mods[b],tag={n:rnd(10),c:pick(WC)};
+  const unseen=G.types.filter(t=>!G.seen.includes(t));
+  let list=[];
+  if(unseen.length)list=shuffle(unseen).slice(0,Math.min(unseen.length,nMod));
+  while(list.length<nMod)list.push(pick(G.types));
+  list=shuffle(list);list.forEach(t=>{if(!G.seen.includes(t))G.seen.push(t)});
   const active=G.players.map((p,i)=>i).filter(i=>!G.players[i].out);
   const sabLeft={};active.forEach(i=>{if(G.players[i].sab)sabLeft[i]=SABS[b]});
   Object.keys(G.pending).forEach(k=>{if(G.players[k].out)delete G.pending[k]});
-  G.bomb={modules:types.map((t,i)=>makeModule(t,'ABCDE'[i])),errors:0,maxErr:Math.max(1,3-G.nextPenalty),turnLimit:Math.max(nMod+3,active.length),turnsUsed:0,first:active[b%active.length],holds:{},passed:{},falseRed:false,stats:{used:0,falseRed:0,alibi:0,swap:0},sabLeft,log:[],ev:[],outcome:null};
+  G.bomb={tag,modules:[],errors:0,maxErr:Math.max(1,d.err-G.nextPenalty),turnLimit:Math.max(nMod+3,active.length),turnsUsed:0,
+    first:active[b%active.length],holds:{},passed:{},falseRed:false,stats:{used:0,falseRed:0,alibi:0,swap:0},sabLeft,log:[],ev:[],outcome:null};
+  G.bomb.modules=list.map((t,i)=>makeModule(t,'ABCDEF'[i],d,G.rules[G.ruleOf[t]],tag));
   G.nextPenalty=0;go('bomb-intro');
 }
 function newTurn(p){const b=G.bomb;b.holds[p]=(b.holds[p]||0)+1;G.turn={p,force:G.pending[p]||null,alibi:false,acted:false,res:null,deadline:0};delete G.pending[p];S.pick=null;S.hold=false;S.sheet=false;S.tab='frag';S.swapPick=false}
@@ -507,7 +625,7 @@ const observed=()=>G.turn.force&&(G.turn.force.type==='scoperte'||G.turn.force.t
 function passTargets(){const b=G.bomb,p=G.turn.p,act=G.players.map((x,i)=>i).filter(i=>i!==p&&!G.players[i].out);
   const fresh=act.filter(i=>!b.holds[i]);if(fresh.length)return{act,free:fresh,fresh:true};
   const free=act.filter(i=>(b.holds[i]||0)<MAXHOLD);return{act,free:free.length?free:act,fresh:false}}
-const fuseSec=()=>!G.fuse?0:G.bombNo===0?Math.max(G.fuse,45):G.fuse;
+const fuseSec=()=>!G.fuse?0:(G.tut&&G.bombNo===0)?Math.max(G.fuse,45):G.fuse;
 const turnNo=()=>G.bomb.log.length+(G.turn&&G.turn.acted?0:1);
 const addEv=(type,data)=>{G.bomb.ev.push({type,t:turnNo(),...data})};
 const lastModule=()=>G.bomb.modules.filter(m=>m.shown!=='green').length===1;
@@ -524,15 +642,19 @@ function checkEnd(){const b=G.bomb;if(b.outcome)return;
   else if(b.errors>=b.maxErr)setTimeout(()=>endBomb('E','Troppi errori.'),1100)}
 function act(mi,choice){
   const b=G.bomb,t=G.turn,m=b.modules[mi];if(t.acted)return;
-  const correct=!m.solved&&choice===answer(m),wasLast=lastModule()&&m.shown!=='green';
-  if(m.type==='cavi'){m.wires[choice].cut=true;sfx.cut()}else if(m.type==='pulsanti'){m.pressed=choice;sfx.thunk()}else{m.pos=choice;sfx.clunk()}
-  let kind,note='',fr=false,alibi=false;
-  if(t.alibi){t.alibi=false;alibi=true;if(correct)m.solved=true;if(!m.solved)m.fake=true;m.shown='green';kind='green';addEv('alibiUse',{p:t.p,mod:m.id})}
+  const correct=!m.solved&&sameAns(choice,answer(m)),wasLast=lastModule()&&m.shown!=='green';
+  if(m.type==='cavi'){m.wires[choice].cut=true;sfx.cut()}
+  else if(m.type==='pulsanti'){m.pressed=choice;sfx.thunk()}
+  else if(m.type==='pomello'){m.pos=choice;sfx.clunk()}
+  else if(m.type==='sequenza'){m.entered=choice;sfx.beep()}
+  else{m.sw=m.sw.map((s,i)=>({...s,up:choice[i]}));sfx.flick()}
+  let kind,note='',fr=false;const wasAlibi=t.alibi;
+  if(t.alibi){t.alibi=false;if(correct)m.solved=true;if(!m.solved)m.fake=true;m.shown='green';kind='green';addEv('alibiUse',{p:t.p,mod:m.id})}
   else if(m.solved){if(m.shown==='red'){m.shown='green';kind='green'}else{b.errors++;kind='red';note='Il modulo era già risolto.'}}
   else if(correct){m.solved=true;m.fake=false;if(b.falseRed){const by=b.falseRed.by;b.falseRed=false;b.stats.falseRed++;m.shown='red';b.errors++;kind='red';fr=true;addEv('frHit',{p:t.p,mod:m.id,by})}else{m.shown='green';kind='green'}}
   else{b.errors++;m.shown='red';m.fake=false;kind='red'}
   b.turnsUsed++;t.acted=true;t.res={mi,kind,note,v:choice};S.pick=null;
-  b.log.push({p:t.p,mod:m.id,kind,fr,alibi});
+  b.log.push({p:t.p,mod:m.id,kind,fr,alibi:wasAlibi});
   const reveal=()=>{if(kind==='green'){sfx.good();vib(40)}else{sfx.bad();vib([120,60,180])}};
   const unhold=()=>setTimeout(()=>{if(G.turn===t&&S.hold){S.hold=false;if(S.screen==='turn')render()}},1100);
   S.hold=true;
@@ -548,32 +670,37 @@ function endBomb(r,why){if(G.bomb.outcome)return;G.bomb.outcome={r,why};G.result
   else{sfx.defuse();vib([60,40,60])}}
 function decided(){
   const d=G.results.filter(r=>r==='D').length,e=G.results.filter(r=>r==='E').length;
-  if(G.players.filter(p=>p.sab).every(p=>p.out))return{w:'A',why:'Tutti i sabotatori smascherati.'};
+  if(G.players.filter(p=>p.sab).every(p=>p.out))return{w:'A',why:'Tutti i traditori smascherati.'};
   if(d>=2)return{w:'A',why:`${d} bombe disinnescate.`};
   if(e>=2)return{w:'S',why:`${e} bombe esplose.`};
   return null;
 }
 
 /* ---------- pezzi di interfaccia ---------- */
-function top(withFuse){
+function plateHTML(){const g=G.bomb.tag;return`<span class="plate">TARGHETTA <span class="psh" style="--c:${COL[g.c]};--t:${TXT[g.c]}">${SH(g.c)}</span><span class="pn">${g.n}</span></span>`}
+function top(withFuse,withPlate){
   const b=G.bomb,pips=Array.from({length:b.maxErr},(_,i)=>`<i class="pip ${i<b.errors?'on':''}"></i>`).join('');
   const fs=fuseSec(),showFuse=withFuse&&fs&&G.turn&&G.turn.deadline&&!G.turn.acted;
   let fuse='';if(showFuse){const r=Math.max(0,Math.ceil((G.turn.deadline-Date.now())/1000));fuse=`<div class="fuse ${r<=5?'hot':''}"><div class="fuse-track"><div class="fuse-bar" style="width:${Math.min(100,r/fs*100)}%"></div></div><span class="fuse-n">${r}</span></div>`}
-  return`<div class="top"><div class="top-row"><span>Bomba <b>${G.bombNo+1}</b>/3</span><span class="pips" aria-label="${b.errors} errori su ${b.maxErr}">${pips}</span><span><b>${turnsLeft()}</b> turni</span></div>${fuse}</div>`;
+  return`<div class="top"><div class="top-row"><span>Bomba <b>${G.bombNo+1}</b>/3</span><span class="pips" aria-label="${b.errors} errori su ${b.maxErr}">${pips}</span><span>${withPlate?plateHTML():`<b>${turnsLeft()}</b> turni`}</span></div>${withPlate?`<div class="top-row"><span><b>${turnsLeft()}</b> turni rimasti</span><span>${DIFFS[G.diff].nome}</span></div>`:''}${fuse}</div>`;
 }
-const fragCard=(type,title,f)=>`<div class="frag"><div class="ft">${ICON[type]}${title}</div><div class="fr"><span class="fk">Se</span><span>${f.s}</span></div><div class="fr"><span class="fk">Allora</span><span>${f.a}</span></div></div>`;
-const fragOf=i=>{const r=G.rules[i>>1];return fragCard(r.type,r.title,r.frags[i&1])};
-function alertLine(){const t=G.turn,b=G.bomb;const f=t&&t.force;
+const fragCard=(type,f)=>`<div class="frag ${f.role}"><div class="fh">${ICON[type]}<span>${TITLES[TYPES.indexOf(type)]}</span>·<b>${f.tag}</b></div><div class="fm">${f.main}</div>${f.note?`<div class="fn">${f.note}</div>`:''}</div>`;
+const fragOf=i=>{const r=G.rules[i>>1];return fragCard(r.type,r.frags[i&1])};
+function alertLine(){const t=G.turn,f=t&&t.force;
   if(f){if(f.type==='testimone')return`<div class="alert">Testimone: ${nm(f.by)} guarda con ${nm(t.p)}.</div>`;return`<div class="alert">${CARDS[f.type].t} su ${nm(t.p)}. ${f.type==='muto'?'Niente descrizione.':'Schermo a tutti.'}</div>`}
   if(anomaly())return`<div class="alert red">Tutto verde, ma ticchetta ancora. Un verde è falso.</div>`;
   if(lastModule())return`<div class="alert red">Manca un solo modulo.</div>`;
   if(turnsLeft()===1)return`<div class="alert red">Ultimo turno.</div>`;
   return''}
-
-/* moduli giocabili direttamente nella griglia */
-function ledHTML(m,waiting){if(waiting)return'<span class="led wait" aria-label="in attesa">?</span>';return`<span class="led ${m.shown}" aria-label="spia ${m.shown==='grey'?'spenta':m.shown==='green'?'verde':'rossa'}">${m.shown==='green'?'✓':m.shown==='red'?'✕':''}</span>`}
 const picked=(i,j)=>S.pick&&S.pick.mi===i&&S.pick.v===j;
-function wiresSVG(m,i,wide,dis,t){
+function pickOf(mi){const m=G.bomb.modules[mi];
+  if(S.pick&&S.pick.mi===mi)return S.pick.v;
+  if(m.type==='sequenza')return[];
+  if(m.type==='interruttori')return m.sw.map(s=>s.up);
+  return null}
+
+/* moduli */
+function wiresHTML(m,i,dis,t){
   return`<div class="wlist" role="group" aria-label="Cavi del modulo ${m.id}">${m.wires.map((w,j)=>{const c=COL[w.c],sel=picked(i,j),hit=t.res&&t.res.mi===i&&t.res.v===j;
     const paths=w.cut?`<path d="M0 10 Q22 13.6 44 13.9" class="wo"/><path d="M56 13.9 Q78 13.6 100 10" class="wo"/><path d="M0 10 Q22 13.6 44 13.9" stroke="${c}" class="ws"/><path d="M56 13.9 Q78 13.6 100 10" stroke="${c}" class="ws"/><path d="M44 13.9 l2 -4 M44 13.9 l2 4 M56 13.9 l-2 -4 M56 13.9 l-2 4" class="fray"/>`
       :`${sel?'<path d="M0 10 Q50 18 100 10" class="wsel"/>':''}<path d="M0 10 Q50 18 100 10" class="wo"/><path d="M0 10 Q50 18 100 10" stroke="${c}" class="ws"/>`;
@@ -581,59 +708,81 @@ function wiresSVG(m,i,wide,dis,t){
 }
 function buttonsHTML(m,i,wide,dis,t){
   return`<div class="arc-grid ${wide?'wide':''}">${m.btns.map((x,j)=>{const hit=t.res&&t.res.mi===i&&t.res.v===j;
-    return`<div class="arc-cell"><button class="arc ${picked(i,j)?'sel':''} ${m.pressed===j?'pressed':''} ${hit?'justpressed':''}" style="--c:${COL[x.c]};--t:${TXT[x.c]}" data-a="pick" data-m="${i}" data-v="${j}" ${dis?'disabled':''} aria-label="Pulsante ${x.c} ${x.l}"><span class="cap"><span class="capsh">${SH(x.c)}</span><span>${x.l}</span></span></button></div>`}).join('')}</div>`;
+    return`<div class="arc-cell"><button class="arc ${picked(i,j)?'sel':''} ${m.pressed===j?'pressed':''} ${hit?'justpressed':''}" style="--c:${COL[x.c]};--t:${TXT[x.c]}" data-a="pick" data-m="${i}" data-v="${j}" ${dis?'disabled':''} aria-label="Pulsante ${j+1}, ${x.c}, ${x.l}"><span class="bn">${j+1}</span><span class="cap"><span class="capsh">${SH(x.c)}</span><span>${x.l}</span></span></button></div>`}).join('')}</div>`;
 }
 function knobHTML(m,i,wide,dis){
   const v=S.pick&&S.pick.mi===i?S.pick.v:m.pos;let nums='';
   for(let n=0;n<10;n++){const a=(n*36-90)*Math.PI/180,x=60+46*Math.cos(a),y=60+46*Math.sin(a),x1=60+33*Math.cos(a),y1=60+33*Math.sin(a),x2=60+38*Math.cos(a),y2=60+38*Math.sin(a);
     nums+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" class="tick ${n===v?'on':''}"/><g class="num ${n===v?'on':''}" ${dis?'':`data-a="pick" data-m="${i}" data-v="${n}"`}><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" class="numhit"/><text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}">${n}</text></g>`}
   const dial=`<svg class="dial" viewBox="0 0 120 120" role="group" aria-label="Pomello del modulo ${m.id}, su ${v}"><defs><radialGradient id="kg${i}" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#7a70b5"/><stop offset="1" stop-color="#241d4a"/></radialGradient><radialGradient id="kc${i}" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#5b5196"/><stop offset="1" stop-color="#2c255a"/></radialGradient></defs>
-    <circle cx="60" cy="60" r="58" class="plate"/>${nums}
+    <circle cx="60" cy="60" r="58" class="plateC"/>${nums}
     <g class="knob-g" style="transform:rotate(${v*36}deg)" ${dis?'':`data-a="knobStep" data-m="${i}"`}><circle cx="60" cy="60" r="27" fill="url(#kg${i})"/><circle cx="60" cy="60" r="26" class="knurl"/><circle cx="60" cy="60" r="18" fill="url(#kc${i})"/><rect x="58" y="35" width="4" height="15" rx="2" class="ptr"/></g></svg>`;
-  const info=`<div class="kinfo"><div class="lcd"><small>display</small><b>${m.d}</b></div><div class="lamp" style="--c:${COL[m.led]};--t:${TXT[m.led]}"><i>${SH(m.led)}</i><small>${m.led}</small></div></div>`;
-  return`<div class="knob-wrap ${wide?'wide':''}">${info}<div class="dial-box">${dial}</div></div>`;
+  return`<div class="knob-wrap ${wide?'wide':''}"><div class="kinfo"><div class="lcd"><small>display</small><b>${m.d}</b></div></div><div class="dial-box">${dial}</div></div>`;
 }
+function seqHTML(m,i,dis){
+  const v=pickOf(i),done=m.solved||m.entered;
+  const show=dis&&m.entered?m.entered:v;
+  const slots=Array.from({length:m.len},(_,k)=>`<i class="${show[k]?'':'empty'}">${show[k]?DGLY[show[k]]:'·'}</i>`).join('');
+  const pad=dis?'':`<div class="dpad">${['su','sin','giu','des'].map(d=>`<button class="dkey" data-a="seq" data-m="${i}" data-v="${d}" ${v.length>=m.len?'disabled':''} aria-label="Aggiungi ${DNAME[d]}">${DGLY[d]}</button>`).join('')}<button class="dkey del" data-a="seqDel" data-m="${i}" ${v.length?'':'disabled'} aria-label="Cancella l'ultimo passo">⌫</button></div>`;
+  return`<div class="seq"><div class="seq-slots" aria-label="Sequenza inserita">${slots}</div>${pad}</div>`;
+}
+function switchesHTML(m,i,dis){
+  const v=pickOf(i);
+  return`<div class="swlist" role="group" aria-label="Interruttori del modulo ${m.id}">${m.sw.map((s,j)=>`<button class="sw ${v[j]?'up':''} ${v[j]!==s.up?'moved':''}" data-a="sw" data-m="${i}" data-v="${j}" ${dis?'disabled':''} aria-label="Interruttore ${j+1} ${s.c}, ${v[j]?'su':'giù'}"><span class="wn">${j+1}</span><span class="wtag" style="--c:${COL[s.c]};--t:${TXT[s.c]}">${SH(s.c)}</span><span class="track"><i></i></span><span class="st">${v[j]?'SU':'GIÙ'}</span></button>`).join('')}</div>`;
+}
+function ledHTML(m,waiting){if(waiting)return'<span class="led wait" aria-label="in attesa">?</span>';return`<span class="led ${m.shown}" aria-label="spia ${m.shown==='grey'?'spenta':m.shown==='green'?'verde':'rossa'}">${m.shown==='green'?'✓':m.shown==='red'?'✕':''}</span>`}
 function moduleTile(m,i,n){
   const t=G.turn,wide=n%2===1&&i===n-1,dis=t.acted,waiting=S.suspense&&t.res&&t.res.mi===i;
   const flash=t.res&&t.res.mi===i&&S.hold&&!S.suspense?(t.res.kind==='green'?'flash-green':'flash-red'):'';
   const last=!t.acted&&lastModule()&&m.shown!=='green'?'last':'',sel=S.pick&&S.pick.mi===i?'picked':'';
-  const body=m.type==='cavi'?wiresSVG(m,i,wide,dis,t):m.type==='pulsanti'?buttonsHTML(m,i,wide,dis,t):knobHTML(m,i,wide,dis);
-  return`<div class="tile ${wide?'wide':''} ${last} ${flash} ${sel}"><div class="tile-h"><span class="id">${m.id}</span><span class="ty">${TITLES[TYPES.indexOf(m.type)]}</span>${ledHTML(m,waiting)}</div><div class="mod-body">${body}</div></div>`;
+  const body=m.type==='cavi'?wiresHTML(m,i,dis,t):m.type==='pulsanti'?buttonsHTML(m,i,wide,dis,t):m.type==='pomello'?knobHTML(m,i,wide,dis):m.type==='sequenza'?seqHTML(m,i,dis):switchesHTML(m,i,dis);
+  const note=m.type==='sequenza'?`${m.len} passi`:m.type==='interruttori'?'gli altri vanno giù':'';
+  return`<div class="tile ${wide?'wide':''} ${last} ${flash} ${sel}"><div class="tile-h"><span class="id">${m.id}</span><span class="ty">${TITLES[TYPES.indexOf(m.type)]}</span>${ledHTML(m,waiting)}</div><div class="mod-body">${body}</div>${note?`<div class="mod-note">${note}</div>`:''}</div>`;
 }
 function pickLabel(){const m=G.bomb.modules[S.pick.mi],v=S.pick.v;
-  const a=m.type==='cavi'?`Taglia il cavo ${v+1}`:m.type==='pulsanti'?`Premi ${m.btns[v].l}`:`Gira su ${v}`;return`${a} · ${m.id}`}
+  const a=m.type==='cavi'?`Taglia il cavo ${v+1}`:m.type==='pulsanti'?`Premi ${m.btns[v].l}`:m.type==='pomello'?`Gira su ${v}`:m.type==='sequenza'?`Conferma la sequenza`:`Conferma gli interruttori`;
+  return`${a} · ${m.id}`}
+function pickReady(){if(!S.pick)return false;const m=G.bomb.modules[S.pick.mi];
+  if(m.type==='sequenza')return S.pick.v.length===m.len;
+  if(m.type==='interruttori')return m.sw.some((s,j)=>s.up!==S.pick.v[j]);
+  return true}
 
 /* ---------- schermate ---------- */
 const V={};
 V['setup']=()=>{
-  const sv=loadSave(),nSab=S.n>=6?2:1,fl=S.fuse?`${S.fuse} s`:'off';
+  const sv=loadSave(),d=DIFFS[S.diff],nT=Math.min(d.types,maxTypes(S.n,S.sab)),sug=sugSab(S.n);
+  const warn=S.sab>=S.n-2?`In ${S.n} con ${S.sab} traditori gli artificieri sono pochissimi: partita quasi persa.`:'';
   return`<div class="head"><div class="logo">Tic Tac<br><span>Traditore</span></div><button class="pill" data-a="go" data-v="rules">Regole</button></div>
   <div class="main center">
   ${sv?`<div class="resume"><p>Partita in corso<br><span class="mute small">bomba ${sv.G.bombNo+1} di 3</span></p><button class="btn ghost" data-a="discard">Scarta</button><button class="btn primary" data-a="resume">Riprendi</button></div>`:''}
+  <div class="chips">${DKEYS.map(k=>`<button class="chip ${S.diff===k?'on':''}" data-a="diff" data-v="${k}" aria-pressed="${S.diff===k}">${DIFFS[k].nome}<small>${DIFFS[k].mods.join('-')} moduli</small></button>`).join('')}</div>
   <div class="settings">
-    <div class="setting"><button class="round" data-a="n" data-v="-1" aria-label="Meno giocatori">−</button><div class="c"><div class="v">${S.n}</div><div class="k">${nSab===1?'1 traditore':'2 traditori'}</div></div><button class="round" data-a="n" data-v="1" aria-label="Più giocatori">+</button></div>
-    <button class="setting" data-a="fuseCycle" style="border:0;color:inherit;cursor:pointer;font:inherit" aria-label="Cambia la miccia"><div class="c" style="flex:1"><div class="v">${fl}</div><div class="k">miccia per turno</div></div></button>
+    <div class="setting"><button class="round" data-a="n" data-v="-1" aria-label="Meno giocatori">−</button><div class="c"><div class="v">${S.n}</div><div class="k">giocatori</div></div><button class="round" data-a="n" data-v="1" aria-label="Più giocatori">+</button></div>
+    <div class="setting"><button class="round" data-a="sab" data-v="-1" aria-label="Meno traditori">−</button><div class="c"><div class="v">${S.sab}</div><div class="k">${S.sab===sug?'traditori ✓':'traditori'}</div></div><button class="round" data-a="sab" data-v="1" aria-label="Più traditori">+</button></div>
+    <div class="setting"><button class="round" data-a="fuse" data-v="-5" aria-label="Meno secondi">−</button><div class="c"><div class="v">${S.fuse?S.fuse+'s':'off'}</div><div class="k">miccia a turno</div></div><button class="round" data-a="fuse" data-v="5" aria-label="Più secondi">+</button></div>
+    <div class="setting" style="justify-content:center"><div class="c"><div class="v">${nT}</div><div class="k">tipi di modulo</div></div></div>
   </div>
+  <button class="toggle ${S.tut?'on':''}" data-a="tut" aria-pressed="${S.tut}"><span class="sw-track"><i></i></span><span>Tutorial nella prima bomba<small>Per chi non ha mai giocato</small></span></button>
+  ${warn?`<p class="warn">${warn}</p>`:''}
   <div class="inputs">${Array.from({length:S.n},(_,i)=>`<input type="text" id="name${i}" data-i="${i}" maxlength="12" placeholder="Giocatore ${i+1}" value="${esc(S.names[i])}" autocomplete="off" aria-label="Nome giocatore ${i+1}">`).join('')}</div>
   </div>
   <div class="bottom"><button class="btn primary" data-a="start">Gioca</button></div>`;
 };
-V['rules']=()=>`<div class="head"><div class="logo" style="font-size:1.8rem">Come si gioca</div></div>
+V['rules']=()=>`<div class="head"><div class="logo" style="font-size:1.7rem">Come si gioca</div></div>
   <div class="main center"><ol class="rules">
-  <li>Ognuno vede in segreto il ruolo e 2 frammenti del manuale.</li>
-  <li>Chi ha la bomba la descrive. Gli altri dicono i frammenti. Tutti possono mentire.</li>
+  <li>Ognuno vede in segreto il ruolo e <b>2 frammenti</b> del manuale. Ogni frammento è mezza regola: da solo non basta mai.</li>
+  <li>Chi ha la bomba è l'unico a vederla: la descrive, compresa la <b>targhetta</b>. Gli altri dicono i frammenti. Tutti possono mentire.</li>
   <li>Una mossa prima che finisca la miccia, poi passi la bomba a chi vuoi.</li>
-  <li>3 errori o turni finiti: boom. Tutti i moduli risolti davvero: salvi.</li>
+  <li>Troppi errori o turni finiti: boom. Tutti i moduli risolti davvero: salvi.</li>
   <li>Dopo ogni bomba si discute e si vota: 3, 2, 1, punta!</li>
   </ol>
-  <p class="mute small">Artificieri: 2 bombe salve o tutti i traditori scoperti. Traditori: 2 esplosioni.${/iPhone|iPad|iPod/.test(navigator.userAgent)?' Su iPhone togli il silenzioso.':''}</p></div>
+  <p class="mute small">Artificieri: 2 bombe salve o tutti i traditori scoperti. Traditori: 2 esplosioni.${isIOS?' Su iPhone togli il silenzioso.':''}</p></div>
   <div class="bottom"><button class="btn primary" data-a="go" data-v="setup">Ho capito</button></div>`;
 V['reveal-pass']=()=>`<div class="main center"><div class="stack"><p class="mute">Passa il telefono a</p><div class="big-name">${nm(S.revealI)}</div><p class="mute small">${S.revealI+1} di ${G.players.length} · gli altri non guardano</p></div></div>
   <div class="bottom"><button class="btn primary" data-a="reveal">Sono io</button></div>`;
 V['reveal-show']=()=>{
-  const P=G.players[S.revealI];
   if(S.qr){let code='';try{code=QR.svg(cardBase()+'#'+encodeCard(S.revealI))}catch(e){}
-    return`<div class="main center"><div class="stack"><div class="display" style="font-size:1.6rem">La tua carta sul tuo telefono</div>${code?`<div class="qrbox">${code}</div>`:'<p class="bad">QR non disponibile.</p>'}<p class="mute small">Inquadra con la fotocamera.${cardBase()===ARTIFACT_URL?' Serve la pagina condivisa con link pubblico.':''}</p></div></div>
+    return`<div class="main center"><div class="stack"><div class="display" style="font-size:1.5rem">La tua carta sul tuo telefono</div>${code?`<div class="qrbox">${code}</div>`:'<p class="bad">QR non disponibile.</p>'}<p class="mute small">Inquadra con la fotocamera.${cardBase()===ARTIFACT_URL?' Serve la pagina condivisa con link pubblico.':''}</p></div></div>
     <div class="bottom"><button class="btn" data-a="qrOff">${ICON.back} Indietro</button></div>`}
   return`<div class="main center">${myCardsHTML(S.revealI,true)}</div>
   <div class="bottom"><button class="btn icon" data-a="qrOn" aria-label="Mostra il QR per il tuo telefono">${ICON.qr}</button><button class="btn primary" data-a="revealDone">Ho memorizzato</button></div>`};
@@ -641,16 +790,17 @@ function myCardsHTML(p,withSab){
   const P=G.players[p],partner=G.players.findIndex((x,i)=>i!==p&&x.sab);
   return`<div class="stack" style="justify-items:start;text-align:left"><div class="role ${P.sab?'S':'A'}">${P.sab?'Traditore':'Artificiere'}</div>${P.sab&&partner>=0?`<p class="small">Complice: <b>${nm(partner)}</b></p>`:''}</div>
   ${P.frags.map(fragOf).join('')}
-  <div class="line">Forzatura: <b>${CARDS[P.card].t}</b>${P.cardUsed?' <span class="mute">(giocata)</span>':''}<br><span class="mute small">${CARDS[P.card].d}</span></div>
-  ${P.sab&&withSab?`<div class="line">Sabotaggi: <b>Falso rosso</b>, <b>Scambio cavi</b>, <b>Verde alibi</b><br><span class="mute small">1 nella prima bomba, poi 2.</span></div>`:''}`;
+  <div class="sect">La tua forzatura</div>
+  <div class="line"><b>${CARDS[P.card].t}</b>${P.cardUsed?' <span class="mute">(giocata)</span>':''}<br><span class="mute small">${CARDS[P.card].d}</span></div>
+  ${P.sab&&withSab?`<div class="sect">I tuoi sabotaggi</div><div class="line"><b>Falso rosso</b>, <b>Scambio cavi</b>, <b>Verde alibi</b><br><span class="mute small">Uno nella prima bomba, poi due.</span></div>`:''}`;
 }
 V['bomb-intro']=()=>{const b=G.bomb;
-  return`${top(false)}<div class="main center"><div class="stack"><div class="boom" style="color:var(--ink);font-size:clamp(3rem,16vw,4.4rem)">Bomba ${G.bombNo+1}</div></div>
+  return`${top(false,false)}<div class="main center"><div class="stack"><div class="boom" style="color:var(--ink);font-size:clamp(2.8rem,15vw,4.2rem)">Bomba ${G.bombNo+1}</div></div>
   <div class="stats"><div class="stat"><b>${b.modules.length}</b><span>moduli</span></div><div class="stat"><b>${b.maxErr}</b><span>errori ammessi</span></div><div class="stat"><b>${fuseSec()?fuseSec()+'s':'—'}</b><span>miccia</span></div></div>
-  <p class="c">Parte <b>${nm(b.first)}</b>${b.maxErr<3?' · <span class="bad">un errore in meno</span>':''}</p></div>
+  <p class="c">Parte <b>${nm(b.first)}</b>${b.maxErr<DIFFS[G.diff].err?' · <span class="bad">un errore in meno</span>':''}</p></div>
   <div class="bottom"><button class="btn primary" data-a="bombGo">Innesca</button></div>`};
 V['handoff']=()=>{const t=G.turn;
-  return`${top(false)}${alertLine()}<div class="main center"><div class="stack"><p class="mute">La bomba passa a</p><div class="big-name">${nm(t.p)}</div></div></div>
+  return`${top(false,false)}${alertLine()}<div class="main center"><div class="stack"><p class="mute">La bomba passa a</p><div class="big-name">${nm(t.p)}</div></div></div>
   <div class="bottom"><button class="btn primary" data-a="turnGo">Sono ${nm(t.p)}</button></div>`};
 V['turn']=()=>{
   const b=G.bomb,t=G.turn;
@@ -662,23 +812,23 @@ V['turn']=()=>{
       if(b.turnsUsed>=b.turnLimit)next=`<div class="bottom"><button class="btn primary" data-a="endTurn">Fine turno</button></div>`;
       else{const{act,free,fresh}=passTargets();
         next=`<p class="c">Passa la bomba a${fresh?' <span class="mute small">(prima chi non l\'ha avuta)</span>':''}</p><div class="names-grid">${act.map(i=>`<button class="name" data-a="passTo" data-v="${i}" ${free.includes(i)?'':'disabled'}>${nm(i)}${b.holds[i]?` <small>${b.holds[i]}×</small>`:''}</button>`).join('')}</div>`}}
-    main=`<div class="main center"><div class="verdict"><div class="orb ${orb[0]}">${orb[1]}</div><div class="display" style="font-size:2rem">${orb[2]}</div>${r.mi!=null?`<p class="mute">Modulo ${b.modules[r.mi].id}${r.note?'. '+r.note:''}</p>`:r.note?`<p class="mute">${r.note}</p>`:''}</div>${next}</div>
+    main=`<div class="main center"><div class="verdict"><div class="orb ${orb[0]}">${orb[1]}</div><div class="display" style="font-size:1.9rem">${orb[2]}</div>${r.mi!=null?`<p class="mute">Modulo ${b.modules[r.mi].id}${r.note?'. '+r.note:''}</p>`:r.note?`<p class="mute">${r.note}</p>`:''}</div>${next}</div>
     ${b.outcome||b.turnsUsed>=b.turnLimit?'':`<div class="bottom"><button class="btn" data-a="sheet" ${observed()?'disabled':''}>${observed()?ICON.lock:''}Le mie carte</button></div>`}`;
   }else{
     const n=b.modules.length;
-    main=`${G.bombNo===0&&!t.acted?'<p class="hint">Descrivi la bomba ad alta voce, poi tocca un cavo, un pulsante o un numero.</p>':''}<div class="mods rows-${Math.ceil(n/2)}">${b.modules.map((m,i)=>moduleTile(m,i,n)).join('')}</div>`;
+    main=`${G.tut&&G.bombNo===0&&!t.acted?'<p class="hint">Descrivi la bomba e la targhetta ad alta voce, poi agisci.</p>':''}<div class="mods rows-${Math.ceil(n/2)}">${b.modules.map((m,i)=>moduleTile(m,i,n)).join('')}</div>`;
     if(!t.acted){
-      if(S.pick){const gm=b.modules[S.pick.mi];main+=`${gm.shown==='green'?`<p class="hint">Il modulo ${gm.id} è già verde: agire conta come mossa.</p>`:''}<div class="bottom"><button class="btn icon" data-a="unpick" aria-label="Annulla la scelta">✕</button><button class="btn primary" data-a="act">${pickLabel()}</button></div>`}
+      if(S.pick){const gm=b.modules[S.pick.mi];main+=`${gm.shown==='green'?`<p class="hint">Il modulo ${gm.id} è già verde: agire conta come mossa.</p>`:''}<div class="bottom"><button class="btn icon" data-a="unpick" aria-label="Annulla la scelta">✕</button><button class="btn primary" data-a="act" ${pickReady()?'':'disabled'}>${pickLabel()}</button></div>`}
       else main+=`<div class="bottom"><button class="btn" data-a="sheet" ${observed()?'disabled':''}>${observed()?ICON.lock:''}Le mie carte</button><button class="btn" data-a="pass" ${b.passed[t.p]?'disabled':''}>Passo</button></div>`;
     }
   }
-  return`${top(true)}${alertLine()}${main}${S.sheet?sheetHTML():''}${S.suspense?'<div class="suspense" aria-live="polite"><span>…</span></div>':''}`;
+  return`${top(true,!t.acted)}${alertLine()}${main}${S.sheet?sheetHTML():''}${S.suspense?'<div class="suspense" aria-live="polite"><span>…</span></div>':''}`;
 };
 function sheetHTML(){
   const t=G.turn,p=t.p,P=G.players[p],b=G.bomb;
   const tabs=[['frag','Frammenti'],['force','Forzatura'],['sab','Sabotaggi']];
   let body='';
-  if(S.tab==='frag')body=`<div class="role ${P.sab?'S':'A'}" style="font-size:1.8rem">${P.sab?'Traditore':'Artificiere'}</div>${P.frags.map(fragOf).join('')}`;
+  if(S.tab==='frag')body=`<div class="role ${P.sab?'S':'A'}" style="font-size:1.7rem">${P.sab?'Traditore':'Artificiere'}</div>${P.frags.map(fragOf).join('')}`;
   else if(S.tab==='force'){
     const mine=Object.entries(G.pending).find(([k,v])=>v.by===p);
     body=`<div class="line"><b>${CARDS[P.card].t}</b><br><span class="mute small">${CARDS[P.card].d}</span></div>`;
@@ -692,35 +842,35 @@ function sheetHTML(){
       body=`<p class="c">Scambio cavi: quale modulo?</p><div class="names-grid">${el.map(i=>`<button class="name" data-a="sabSwap" data-v="${i}">Modulo ${b.modules[i].id}</button>`).join('')}</div><button class="btn ghost" data-a="swapBack">Annulla</button>`}
     else{const left=b.sabLeft[p]||0,hasSwap=b.modules.some(canSwap);
       body=`<p class="c mute small">Ti restano ${left} sabotaggi in questa bomba.</p>
-      <button class="btn sab-btn" data-a="sabRed" ${left<1||b.falseRed?'disabled':''}>${SABS_INFO.red[0]}${b.falseRed?' (armato)':''}<small>${SABS_INFO.red[1]}</small></button>
-      <button class="btn sab-btn" data-a="sabSwapOpen" ${left<1||!hasSwap?'disabled':''}>${SABS_INFO.swap[0]}<small>${SABS_INFO.swap[1]}</small></button>
-      <button class="btn sab-btn" data-a="sabAlibi" ${left<1||t.acted||t.alibi?'disabled':''}>${SABS_INFO.alibi[0]}${t.alibi?' (armato)':''}<small>${SABS_INFO.alibi[1]}</small></button>`}
+      <button class="btn sab-btn" data-a="sabRed" ${left<1||b.falseRed?'disabled':''}>Falso rosso${b.falseRed?' (armato)':''}<small>La prossima mossa giusta mostra rosso.</small></button>
+      <button class="btn sab-btn" data-a="sabSwapOpen" ${left<1||!hasSwap?'disabled':''}>Scambio cavi<small>Due cavi cambiano posto.</small></button>
+      <button class="btn sab-btn" data-a="sabAlibi" ${left<1||t.acted||t.alibi?'disabled':''}>Verde alibi${t.alibi?' (armato)':''}<small>La tua mossa mostra verde ma non risolve.</small></button>`}
   }
-  return`<div class="sheet" role="dialog" aria-label="Le mie carte"><div class="sheet-in">${top(true)}<div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${S.tab===k?'on':''}" data-a="tab" data-v="${k}">${l}</button>`).join('')}</div><div class="main">${body}</div><div class="bottom"><button class="btn primary" data-a="sheetClose">Chiudi</button></div></div></div>`;
+  return`<div class="sheet" role="dialog" aria-label="Le mie carte"><div class="sheet-in">${top(true,false)}<div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${S.tab===k?'on':''}" data-a="tab" data-v="${k}">${l}</button>`).join('')}</div><div class="main">${body}</div><div class="bottom"><button class="btn primary" data-a="sheetClose">Chiudi</button></div></div></div>`;
 }
 V['bomb-end']=()=>{const o=G.bomb.outcome;
   return`<div class="main center"><div class="boom ${o.r}">${o.r==='E'?'BOOM':'Salvi!'}</div><p class="c mute">${esc(o.why)}</p></div>
   <div class="bottom"><button class="btn primary" data-a="go" data-v="report">Rapporto</button></div>`};
 const kindTxt=k=>k==='pass'?'<span class="r">passo</span>':k==='tempo'?'<span class="r bad">miccia</span>':k==='green'?'<span class="r ok">verde</span>':'<span class="r bad">rosso</span>';
 V['report']=()=>{const b=G.bomb,s=b.stats,fakeNow=b.modules.filter(m=>m.fake).length,d=decided();
-  return`<div class="main"><div class="display" style="font-size:1.8rem">Rapporto</div>
+  return`<div class="main"><div class="display" style="font-size:1.7rem">Rapporto</div>
   <div class="stats" style="grid-template-columns:repeat(4,1fr)"><div class="stat"><b>${s.used}</b><span>sabotaggi</span></div><div class="stat"><b>${s.falseRed}</b><span>rossi falsi</span></div><div class="stat"><b>${s.alibi}</b><span>verdi falsi</span></div><div class="stat"><b>${s.swap}</b><span>scambi</span></div></div>
   ${fakeNow?`<p class="small bad c">${fakeNow===1?'Un verde falso è ancora acceso.':fakeNow+' verdi falsi ancora accesi.'}</p>`:''}
   <ul class="rows">${b.log.map(l=>`<li><span>${nm(l.p)}${l.mod?` · ${l.mod}`:''}${l.to!=null?` <span class="mute">→ ${nm(l.to)}</span>`:''}</span>${kindTxt(l.kind)}</li>`).join('')}</ul></div>
   <div class="bottom">${d?`<button class="btn primary" data-a="go" data-v="game-end">Fine partita</button>`:`<button class="btn primary" data-a="discuss">Discutete</button>`}</div>`};
 V['discuss']=()=>`<div class="main center"><div class="count" id="disc">${S.disc}</div><p class="c mute">Chi ha mentito? Chi ha passato a chi?</p></div><div class="bottom"><button class="btn primary" data-a="toVote">Votiamo</button></div>`;
 V['vote']=()=>{
-  if(S.vc==='idle')return`<div class="main center"><div class="stack"><div class="boom" style="color:var(--fuse);font-size:clamp(2.6rem,14vw,3.6rem)">3, 2, 1, punta!</div><p class="mute">Al via, tutti indicano un sospetto. O nessuno.</p></div></div><div class="bottom"><button class="btn primary" data-a="voteGo">Via</button></div>`;
+  if(S.vc==='idle')return`<div class="main center"><div class="stack"><div class="boom" style="color:var(--fuse);font-size:clamp(2.4rem,13vw,3.4rem)">3, 2, 1, punta!</div><p class="mute">Al via, tutti indicano un sospetto. O nessuno.</p></div></div><div class="bottom"><button class="btn primary" data-a="voteGo">Via</button></div>`;
   if(S.vc!=='pick')return`<div class="main center"><div class="count">${S.vc}</div></div>`;
   const act=G.players.map((p,i)=>i).filter(i=>!G.players[i].out);
   return`<div class="main center"><p class="c">Chi ha indicato la maggioranza?</p><div class="names-grid">${act.map(i=>`<button class="name" data-a="accuse" data-v="${i}">${nm(i)}</button>`).join('')}</div></div><div class="bottom"><button class="btn" data-a="accuse" data-v="-1">Nessuna maggioranza</button></div>`};
 V['vote-result']=()=>{const a=S.accused;let h;
-  if(a<0)h=`<div class="display" style="font-size:2rem">Nessuno</div><p class="mute">I sospetti restano.</p>`;
-  else if(G.players[a].sab)h=`<p class="mute">${nm(a)} era</p><div class="role S" style="font-size:3rem">Traditore</div><p class="mute">È fuori.</p>`;
-  else h=`<p class="mute">${nm(a)} era</p><div class="role A" style="font-size:3rem">Artificiere</div><p class="bad">Prossima bomba: un errore in meno.</p>`;
+  if(a<0)h=`<div class="display" style="font-size:1.9rem">Nessuno</div><p class="mute">I sospetti restano.</p>`;
+  else if(G.players[a].sab)h=`<p class="mute">${nm(a)} era</p><div class="role S" style="font-size:2.8rem">Traditore</div><p class="mute">È fuori.</p>`;
+  else h=`<p class="mute">${nm(a)} era</p><div class="role A" style="font-size:2.8rem">Artificiere</div><p class="bad">Prossima bomba: un errore in meno.</p>`;
   return`<div class="main center"><div class="stack">${h}</div></div><div class="bottom">${decided()?`<button class="btn primary" data-a="go" data-v="game-end">Fine partita</button>`:`<button class="btn primary" data-a="nextBomb">Prossima bomba</button>`}</div>`};
 
-/* finale: film e premi */
+/* finale */
 function filmList(pb){
   const N=i=>nm(i),SB=i=>`<b>${nm(i)}</b>`,items=[];
   pb.ev.forEach(e=>{let tx='',sab=false;
@@ -760,16 +910,16 @@ V['game-end']=()=>{const d=decided();
     body=`<div class="tabs">${G.past.map((x,i)=>`<button class="tab ${i===S.filmBomb?'on':''}" data-a="filmBomb" data-v="${i}">Bomba ${i+1} <span class="${x.r==='D'?'ok':'bad'}">${x.r==='D'?'✓':'✕'}</span></button>`).join('')}</div>${filmList(pb)}`}
   else if(S.endTab==='premi')body=awardsHTML();
   else if(S.endTab==='ruoli')body=`<ul class="rows">${G.players.map((p,i)=>`<li><span>${nm(i)}</span>${p.sab?`<b class="bad">Traditore${p.out?' (scoperto)':''}</b>`:'<span class="ok">Artificiere</span>'}</li>`).join('')}</ul>`;
-  else{const r=G.rules[S.manRule||0];
-    body=`<div class="tabs">${G.rules.map((x,i)=>`<button class="tab ${i===(S.manRule||0)?'on':''}" data-a="manRule" data-v="${i}">${x.title}</button>`).join('')}</div>${r.frags.map(f=>fragCard(r.type,r.title,f)).join('')}`}
-  return`<div class="stack"><div class="boom ${d.w==='A'?'D':'E'}" style="font-size:clamp(2.2rem,11vw,3rem)">${d.w==='A'?'Vincono gli artificieri':'Vincono i traditori'}</div><p class="mute small">${esc(d.why)}</p></div>
+  else{const r=G.rules[Math.min(S.manRule,G.rules.length-1)];
+    body=`<div class="tabs">${G.rules.map((x,i)=>`<button class="tab ${i===Math.min(S.manRule,G.rules.length-1)?'on':''}" data-a="manRule" data-v="${i}">${x.title}</button>`).join('')}</div>${r.frags.map(f=>fragCard(r.type,f)).join('')}`}
+  return`<div class="stack"><div class="boom ${d.w==='A'?'D':'E'}" style="font-size:clamp(2rem,10vw,2.8rem)">${d.w==='A'?'Vincono gli artificieri':'Vincono i traditori'}</div><p class="mute small">${esc(d.why)}</p></div>
   <div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${S.endTab===k?'on':''}" data-a="endTab" data-v="${k}">${l}</button>`).join('')}</div>
   <div class="main">${body}</div>
   <div class="bottom"><button class="btn" data-a="go" data-v="setup">Giocatori</button><button class="btn primary" data-a="start">Rivincita</button></div>`};
 V['card']=()=>{const c=S.card;
   if(!c)return`<div class="main center"><p class="c">Codice non valido. Riprova a inquadrare il QR.</p></div><div class="bottom"><button class="btn" data-a="exitCard">Vai al gioco</button></div>`;
-  if(!S.cardShow)return`<div class="cover"><div class="stack"><div class="display" style="font-size:2rem">Carta coperta</div><p class="mute small">Controlla che nessuno guardi.</p></div></div><div class="bottom"><button class="btn primary" data-a="cardToggle">Mostra</button></div>`;
-  return`<div class="main center"><div class="role ${c.sab?'S':'A'}">${c.sab?'Traditore':'Artificiere'}</div>${c.frags.map(f=>fragCard(f.type,f.title,f.f)).join('')}<div class="line">Forzatura: <b>${CARDS[c.card].t}</b><br><span class="mute small">${CARDS[c.card].d}</span></div></div><div class="bottom"><button class="btn" data-a="cardToggle">Copri</button></div>`};
+  if(!S.cardShow)return`<div class="cover"><div class="stack"><div class="display" style="font-size:1.9rem">Carta coperta</div><p class="mute small">Controlla che nessuno guardi.</p></div></div><div class="bottom"><button class="btn primary" data-a="cardToggle">Mostra</button></div>`;
+  return`<div class="main center"><div class="role ${c.sab?'S':'A'}">${c.sab?'Traditore':'Artificiere'}</div>${c.frags.map(f=>fragCard(f.type,f.f)).join('')}<div class="sect">La tua forzatura</div><div class="line"><b>${CARDS[c.card].t}</b><br><span class="mute small">${CARDS[c.card].d}</span></div></div><div class="bottom"><button class="btn" data-a="cardToggle">Copri</button></div>`};
 
 /* ---------- render e azioni ---------- */
 function go(s){S.screen=s;render()}
@@ -792,7 +942,7 @@ function render(){
   if(!['card','setup','rules'].includes(S.screen))save();
 }
 function resume(){const s=loadSave();if(!s)return;
-  G=s.G;G.rules=G.rules.map(r=>buildRule(r.ti,r.t,r.p));S.revealI=s.revealI||0;S.accused=s.accused;S.sheet=false;S.swapPick=false;S.pick=null;S.hold=false;S.qr=false;wake();
+  G=hydrate(s.G);S.revealI=s.revealI||0;S.accused=s.accused;S.sheet=false;S.swapPick=false;S.pick=null;S.hold=false;S.qr=false;wake();
   let scr=s.screen;
   if(scr==='turn'){const b=G.bomb;if(!b.outcome&&(allSolved()||b.errors>=b.maxErr)){S.screen='turn';endBomb(allSolved()?'D':'E',allSolved()?'Tutti i moduli risolti.':'Troppi errori.');return}
     if(!G.turn.acted){G.turn.deadline=0;scr='handoff'}}
@@ -802,8 +952,11 @@ function resume(){const s=loadSave();if(!s)return;
   go(scr);
 }
 const H={
-  n:v=>{S.n=Math.min(8,Math.max(4,S.n+ +v));saveNames();render()},
-  fuseCycle:()=>{const o=[30,45,0,20];S.fuse=o[(o.indexOf(S.fuse)+1)%o.length];saveNames();render()},
+  n:v=>{S.n=Math.min(8,Math.max(4,S.n+ +v));S.sab=Math.min(S.sab,S.n-2);saveOpt();render()},
+  sab:v=>{S.sab=Math.min(Math.max(1,S.sab+ +v),Math.min(3,S.n-2));saveOpt();render()},
+  diff:v=>{S.diff=v;S.fuse=DIFFS[v].fuse;saveOpt();render()},
+  fuse:v=>{const o=[0,15,20,25,30,35,40,45,50,55,60];let i=o.indexOf(S.fuse);if(i<0)i=4;S.fuse=o[Math.min(o.length-1,Math.max(0,i+(+v>0?1:-1)))];saveOpt();render()},
+  tut:()=>{S.tut=!S.tut;saveOpt();render()},
   start:()=>{clearSave();newGame()},
   resume:()=>resume(),
   discard:()=>{clearSave();render()},
@@ -814,9 +967,14 @@ const H={
   bombGo:()=>{newTurn(G.bomb.first);go('handoff')},
   turnGo:()=>{if(fuseSec())G.turn.deadline=Date.now()+fuseSec()*1000;go('turn')},
   pick:(v,el)=>{if(G.turn.acted||S.suspense)return;const mi=+el.dataset.m,m=G.bomb.modules[mi];S.pick={mi,v:+v};if(m.type==='pomello')sfx.clunk();else sfx.click();render()},
-  unpick:()=>{S.pick=null;render()},
   knobStep:(v,el)=>{if(G.turn.acted||S.suspense)return;const mi=+el.dataset.m,m=G.bomb.modules[mi],cur=S.pick&&S.pick.mi===mi?S.pick.v:m.pos;S.pick={mi,v:(cur+1)%10};sfx.clunk();render()},
-  act:()=>{if(!S.pick)return;const{mi,v}=S.pick;S.pick=null;act(mi,v)},
+  seq:(v,el)=>{if(G.turn.acted||S.suspense)return;const mi=+el.dataset.m,m=G.bomb.modules[mi],cur=S.pick&&S.pick.mi===mi?[...S.pick.v]:[];
+    if(cur.length>=m.len)return;cur.push(v);S.pick={mi,v:cur};sfx.beep();render()},
+  seqDel:(v,el)=>{const mi=+el.dataset.m;if(!S.pick||S.pick.mi!==mi||!S.pick.v.length)return;S.pick={mi,v:S.pick.v.slice(0,-1)};sfx.click();render()},
+  sw:(v,el)=>{if(G.turn.acted||S.suspense)return;const mi=+el.dataset.m,m=G.bomb.modules[mi],j=+v;
+    const cur=S.pick&&S.pick.mi===mi?[...S.pick.v]:m.sw.map(s=>s.up);cur[j]=!cur[j];S.pick={mi,v:cur};sfx.flick();render()},
+  unpick:()=>{S.pick=null;render()},
+  act:()=>{if(!S.pick||!pickReady())return;const{mi,v}=S.pick;S.pick=null;act(mi,v)},
   pass:()=>{const b=G.bomb,t=G.turn;if(t.acted)return;S.pick=null;b.passed[t.p]=true;b.turnsUsed++;t.acted=true;t.alibi=false;t.res={kind:'pass'};b.log.push({p:t.p,mod:null,kind:'pass'});render()},
   passTo:v=>{const b=G.bomb;if(b.outcome)return;const last=b.log[b.log.length-1];if(last)last.to=+v;newTurn(+v);sfx.tick();go('handoff')},
   endTurn:()=>{const b=G.bomb;if(b.outcome)return;endBomb('E','I turni sono finiti.')},
@@ -832,7 +990,8 @@ const H={
   discuss:()=>{S.disc=60;go('discuss');discTimer=setInterval(()=>{S.disc--;const el=document.getElementById('disc');if(el)el.textContent=S.disc;if(S.disc<=10&&S.disc>0)sfx.tick();if(S.disc<=0){clearInterval(discTimer);S.vc='idle';go('vote')}},1000)},
   toVote:()=>{S.vc='idle';go('vote')},
   voteGo:()=>{const seq=[3,2,1,'Punta!'];seq.forEach((x,i)=>setTimeout(()=>{S.vc=x;render();x==='Punta!'?(tone(880,.4,'square',.1),vib(200)):tone(440,.12,'square',.08)},i*900));setTimeout(()=>{S.vc='pick';render()},seq.length*900+600)},
-  accuse:v=>{S.accused=+v;const pb=G.past[G.past.length-1];if(pb)pb.acc=S.accused>=0?{p:S.accused,sab:G.players[S.accused].sab}:{p:-1};if(S.accused>=0){const P=G.players[S.accused];if(P.sab){P.out=true;sfx.good()}else{G.nextPenalty=1;sfx.bad()}}go('vote-result')},
+  accuse:v=>{S.accused=+v;const pb=G.past[G.past.length-1];if(pb)pb.acc=S.accused>=0?{p:S.accused,sab:G.players[S.accused].sab}:{p:-1};
+    if(S.accused>=0){const P=G.players[S.accused];if(P.sab){P.out=true;sfx.good()}else{G.nextPenalty=1;sfx.bad()}}go('vote-result')},
   nextBomb:()=>{G.bombNo++;newBomb()},
   endTab:v=>{S.endTab=v;render()},
   filmBomb:v=>{S.filmBomb=+v;render()},
@@ -841,7 +1000,7 @@ const H={
   exitCard:()=>{try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}S.card=null;go('setup')}
 };
 $app.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.disabled)return;au();if(G)wake();const f=H[el.dataset.a];if(f)f(el.dataset.v,el)});
-$app.addEventListener('input',e=>{if(e.target.dataset.i!=null){S.names[+e.target.dataset.i]=e.target.value;saveNames()}});
+$app.addEventListener('input',e=>{if(e.target.dataset.i!=null){S.names[+e.target.dataset.i]=e.target.value;saveOpt()}});
 function boot(){const h=(location.hash||'').slice(1);if(/^c\d/.test(h)){S.card=decodeCard(h);S.cardShow=false;S.screen='card'}render()}
 window.addEventListener('hashchange',boot);
 boot();
